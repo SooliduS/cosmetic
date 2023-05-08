@@ -13,6 +13,10 @@ const options = {
                 url: 'http://localhost:3500',
                 description: 'Local server',
             },
+            {
+                url: 'https://cosmetic-backend.onrender.com',
+                description:'deployed version on render.com'
+            }
         ],
         components: {
             schemas: {
