@@ -7,7 +7,14 @@ const { getAllProducts , getAmazingOfferProducts , getMostSalesProducts , getNew
  *   get:
  *     summary: get all products product
  *     tags: [Get Products]
- */
+ *     responses:
+ *       '200':
+ *         description:'ok'
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Product'
+ */         
 router.get('/all' , getAllProducts)
 
 /**
