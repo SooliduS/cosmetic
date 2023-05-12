@@ -15,6 +15,38 @@ const {
  *     tags:
  *       - GetProducts
  *     description: Get all products as an array
+ *     parameters:
+ *       - name: color
+ *         description: Color of the product
+ *         in: query
+ *         schema:
+ *           type: string
+ *       - name: brand
+ *         description: Brand of the product
+ *         in: query
+ *         schema:
+ *           type: string
+ *       - name: price
+ *         description: Price range of the product
+ *         in: query
+ *         schema:
+ *           type: string
+ *       - name: sort
+ *         description: how to sort
+ *         in: query
+ *         schema:
+ *           type: string
+ *           enum: [mostSales , mostViews , mostExpensive , cheapest , newest]
+ *       - name: offset
+ *         description: the number of the starting item
+ *         in: query
+ *         schema:
+ *           type: integer
+ *       - name: limit
+ *         description: number of items to send
+ *         in: query
+ *         schema:
+ *           type: integer
  *     produces:
  *       - application/json
  *     responses:
@@ -35,15 +67,47 @@ router.get('/all', getAllProducts);
  * @swagger
  * /getproducts/amazingoffers:
  *   get:
- *     summary: Get amazing offers products
+ *     summary: Get amazing offers
  *     tags:
  *       - GetProducts
- *     description: Get amazing offers products as an array
+ *     description: Get amazing offers as an array
+ *     parameters:
+ *       - name: color
+ *         description: Color of the product
+ *         in: query
+ *         schema:
+ *           type: string
+ *       - name: brand
+ *         description: Brand of the product
+ *         in: query
+ *         schema:
+ *           type: string
+ *       - name: price
+ *         description: Price range of the product
+ *         in: query
+ *         schema:
+ *           type: string
+ *       - name: sort
+ *         description: how to sort
+ *         in: query
+ *         schema:
+ *           type: string
+ *           enum: [mostSales , mostViews , mostExpensive , cheapest , newest]
+ *       - name: offset
+ *         description: the number of the starting item
+ *         in: query
+ *         schema:
+ *           type: integer
+ *       - name: limit
+ *         description: number of items to send
+ *         in: query
+ *         schema:
+ *           type: integer
  *     produces:
  *       - application/json
  *     responses:
  *       200:
- *         description: amazing offers products
+ *         description: amazing offers
  *         content:
  *           application/json:
  *             schema:
@@ -63,6 +127,38 @@ router.get('/amazingoffers', getAmazingOfferProducts);
  *     tags:
  *       - GetProducts
  *     description: Get mostSales products as an array
+ *     parameters:
+ *       - name: color
+ *         description: Color of the product
+ *         in: query
+ *         schema:
+ *           type: string
+ *       - name: brand
+ *         description: Brand of the product
+ *         in: query
+ *         schema:
+ *           type: string
+ *       - name: price
+ *         description: Price range of the product
+ *         in: query
+ *         schema:
+ *           type: string
+ *       - name: sort
+ *         description: how to sort
+ *         in: query
+ *         schema:
+ *           type: string
+ *           enum: [mostSales , mostViews , mostExpensive , cheapest , newest]
+ *       - name: offset
+ *         description: the number of the starting item
+ *         in: query
+ *         schema:
+ *           type: integer
+ *       - name: limit
+ *         description: number of items to send
+ *         in: query
+ *         schema:
+ *           type: integer
  *     produces:
  *       - application/json
  *     responses:
@@ -87,6 +183,38 @@ router.get('/mostSales', getMostSalesProducts);
  *     tags:
  *       - GetProducts
  *     description: Get newest products as an array
+ *     parameters:
+ *       - name: color
+ *         description: Color of the product
+ *         in: query
+ *         schema:
+ *           type: string
+ *       - name: brand
+ *         description: Brand of the product
+ *         in: query
+ *         schema:
+ *           type: string
+ *       - name: price
+ *         description: Price range of the product
+ *         in: query
+ *         schema:
+ *           type: string
+ *       - name: sort
+ *         description: how to sort
+ *         in: query
+ *         schema:
+ *           type: string
+ *           enum: [mostSales , mostViews , mostExpensive , cheapest , newest]
+ *       - name: offset
+ *         description: the number of the starting item
+ *         in: query
+ *         schema:
+ *           type: integer
+ *       - name: limit
+ *         description: number of items to send
+ *         in: query
+ *         schema:
+ *           type: integer
  *     produces:
  *       - application/json
  *     responses:
@@ -133,6 +261,5 @@ router.get('/newest', getNewestProducts);
  *         description: Internal server error
  */
 router.get('/single/:id', getProduct);
-
 
 module.exports = router;

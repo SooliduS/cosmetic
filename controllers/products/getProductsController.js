@@ -1,8 +1,13 @@
 const Product = require('../../models/productModel');
+const filterProducts = require('../../lib/filterProducts')
 
 const getAllProducts = async (req, res) => {
+
+    const {offset , limit} = req.query
+    const params = filterProducts(req)
+
     try {
-        const products = await Product.find();
+        const products = await Product.find(params.filter).sort(params.sort).skip((offset)).limit(limit)
         return res.status(200).json(products);
     } catch (e) {
         return res.status(500).json({ message: e.message });
@@ -10,11 +15,16 @@ const getAllProducts = async (req, res) => {
 };
 
 const getAmazingOfferProducts = async (req, res) => {
+
+    const {offset , limit} = req.query
+    const params = filterProducts(req)
+
     try {
         const products = await Product.find({
             isAmazingOffer: true,
-            discount: { $gt: 5 },
-        });
+            discount: { $gte: 1 },
+            ...params.filter
+        }).sort(params.sort).skip(offset).limit(limit)
 
         return res.status(200).json(products);
     } catch (e) {
@@ -23,8 +33,12 @@ const getAmazingOfferProducts = async (req, res) => {
 };
 
 const getNewestProducts = async (req, res) => {
+
+    const {offset , limit} = req.query
+    const params = filterProducts(req)
+
     try {
-        const products = await Product.find().sort({ createdAt: -1 }).limit(20);
+        const products = await Product.find(params.filter).sort({ createdAt: -1 }).skip(offset).limit(limit);
 
         return res.status(200).json(products);
     } catch (e) {
@@ -33,10 +47,15 @@ const getNewestProducts = async (req, res) => {
 };
 
 const getMostSalesProducts = async (req, res) => {
+
+    const {offset , limit} = req.query
+    const params = filterProducts(req)
+
     try {
         const products = await Product.find({ ordersCount: { $gt: 1 } })
             .sort({ ordersCount: -1 })
-            .limit(20);
+            .skip(offset)
+            .limit(limit);
 
         return res.status(200).json(products);
     } catch (e) {
