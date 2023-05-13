@@ -48,6 +48,7 @@ app.use('/register' , require('./routes/users/register'))
 app.use('/login' , require('./routes/users/auth'))
 app.use('/getproducts' , require('./routes/products/getProducts'))
 app.use('/getposts' , require('./routes/posts/getPosts'))
+app.use('/getcategories' , require('./routes/categories/getCategories'))
 
 //private routes
 // app.use(verifyJWT)//↓
