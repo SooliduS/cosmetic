@@ -67,7 +67,7 @@ const userSchema = new Schema(
             default:0
         },
         productsForSale:[{type:Schema.Types.ObjectId , ref:'Product'}],
-        wallet:Number
+        wallet:{type:Schema.Types.ObjectId , ref:'Wallet'}
     },
     { timestamps: true }
 );

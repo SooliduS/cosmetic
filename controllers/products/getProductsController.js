@@ -3,8 +3,10 @@ const filterProducts = require('../../lib/filterProducts')
 
 const getAllProducts = async (req, res) => {
 
-    const {offset , limit} = req.query
+    let {offset , limit} = req.query
     const params = filterProducts(req)
+
+    if (!offset) offset = 0
 
     try {
         const products = await Product.find(params.filter).sort(params.sort).skip((offset)).limit(limit)
