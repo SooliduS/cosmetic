@@ -49,16 +49,25 @@ const userSchema = new Schema(
             phoneNumber: String,
         },
         refreshToken: String,
-        favCategories: [{ type: Schema.Types.ObjectId, ref: 'Category' }],
-        favProducts: [{ type: Schema.Types.ObjectId, ref: 'Product' }],
+        melliCode: String,
+        melliCardImg:String,
         verified: { type: Boolean, default: false },
 		active:{type:Boolean , default:true },
-        suppliersAndPercentages: [
-            {
-                supplier: { type: Schema.Types.ObjectId, ref: 'Supplier' },
-                percentage: Number,
+        socialMedias:{
+            instagram:{
+                type:String,
+                required:true
             },
-        ],
+            telegram:String,
+            website:String,
+            twitter:String,
+        },
+        level:{
+            type:Number,
+            default:0
+        },
+        productsForSale:[{type:Schema.Types.ObjectId , ref:'Product'}],
+        wallet:Number
     },
     { timestamps: true }
 );

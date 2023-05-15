@@ -11,14 +11,6 @@ const walletTransactionSchema = new Schema(
             ref: 'Transaction',
         },
         order: { type: Schema.Types.ObjectId, ref: 'Order' },
-        status: {
-            type: String,
-            enum: ['done', 'waiting', 'canceled'],
-            default: 'waiting',
-        },
-        message:{
-            type:String,
-        }
     },
     { timestamps: true }
 );

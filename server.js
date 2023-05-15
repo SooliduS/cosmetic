@@ -54,7 +54,7 @@ app.use('/getcategories' , require('./routes/categories/getCategories'))
 // app.use(verifyJWT)//↓
 app.use('/refresh' , require('./routes/users/refresh'))
 app.use('/logout' , require('./routes/users/logout'))
-app.use('/products' , require('./routes/products/crud'))//all products crud controller
+app.use('/product' , require('./routes/products/crud'))//all products crud controller
 
 //handle errors
 app.use(errorHandler);

@@ -3,6 +3,7 @@ const Product = require('../../models/productModel');
 const addProduct = async (req, res) => {
     const product = req.body;
 
+    console.log(req.body);
     if (!product.name)
         return res.status(400).json({ message: 'product name requires' });
     // if(!product.categories) return res.status(400).json({message:'category requires'})

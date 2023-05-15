@@ -39,7 +39,7 @@ const productSchema = new Schema(
         rating: {
             type: Number,
             required: true,
-            default: 0,
+            default: 3.5,
         },
         tags: [String],
         details: [{ key: String, value: String }],

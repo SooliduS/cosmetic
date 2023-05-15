@@ -16,12 +16,16 @@ const orderSchema = new Schema(
                     ref: 'Product',
                     required: true,
                 },
-                options: [{ key: String, value: String }],
                 quantity: { type: Number, required: true },
                 price: { type: Number, required: true },
             },
         ],
-        shippingAddress: {}, //has to develop
+        shippingAddress: {
+            city: String,
+            postalCode: String,
+            details: String,
+            phoneNumber: String,
+        },
         paymentMethod: { 
             type: String,
             enum:['idpay']
@@ -42,7 +46,7 @@ const orderSchema = new Schema(
         transaction: { type: Schema.Types.ObjectId, ref: 'Transaction' },
         taxPrice: Number,
         shippingPrice: Number,
-        shippingClass: {},//has to develop
+        shippingClass: {type:Schema.Types.ObjectId , ref:'ShippingClass'},
         totalPrice: {
             type: Number,
             required: true,

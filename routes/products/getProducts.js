@@ -31,6 +31,7 @@ const {
  *         in: query
  *         schema:
  *           type: string
+ *         example: 100000-200000
  *       - name: sort
  *         description: how to sort
  *         in: query
@@ -47,6 +48,12 @@ const {
  *         in: query
  *         schema:
  *           type: integer
+ *       - name: categories
+ *         description: list of ids of categories that need to search for (for subcategories just send a subcategory id alone in array)
+ *         in: query
+ *         schema: 
+ *           type: array
+ *           example: [645e325ba7c9a32759c2083a]
  *     produces:
  *       - application/json
  *     responses:
@@ -87,6 +94,7 @@ router.get('/all', getAllProducts);
  *         in: query
  *         schema:
  *           type: string
+ *         example: [645e325ba7c9a32759c2083a]
  *       - name: sort
  *         description: how to sort
  *         in: query
@@ -143,6 +151,7 @@ router.get('/amazingoffers', getAmazingOfferProducts);
  *         in: query
  *         schema:
  *           type: string
+ *         example: [645e325ba7c9a32759c2083a]
  *       - name: sort
  *         description: how to sort
  *         in: query
@@ -199,6 +208,7 @@ router.get('/mostSales', getMostSalesProducts);
  *         in: query
  *         schema:
  *           type: string
+ *         example: [645e325ba7c9a32759c2083a]
  *       - name: sort
  *         description: how to sort
  *         in: query
