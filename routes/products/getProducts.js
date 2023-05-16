@@ -19,11 +19,13 @@ const {
  *       - name: colors
  *         description: list of color names of the products splited by "-"
  *         in: query
+ *         example: آبی-سفید-صورتی
  *         schema:
  *           type: string
  *       - name: brands
  *         description: list of Brands of the products splited by "-"
  *         in: query
+ *         example: oreal-nike-golrang
  *         schema:
  *           type: string
  *       - name: price
@@ -53,7 +55,7 @@ const {
  *         in: query
  *         schema: 
  *           type: string
- *           example: [645e325ba7c9a32759c2083a]
+ *           example: 645e325ba7c9a32759c2083a-645e325ba7c9a32759c2083a-645e325ba7c9a32759c2083a
  *     produces:
  *       - application/json
  *     responses:
