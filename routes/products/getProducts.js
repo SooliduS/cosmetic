@@ -16,13 +16,13 @@ const {
  *       - GetProducts
  *     description: Get all products as an array
  *     parameters:
- *       - name: color
- *         description: Color of the product
+ *       - name: colors
+ *         description: list of color names of the products splited by "-"
  *         in: query
  *         schema:
  *           type: string
- *       - name: brand
- *         description: Brand of the product
+ *       - name: brands
+ *         description: list of Brands of the products splited by "-"
  *         in: query
  *         schema:
  *           type: string
@@ -49,10 +49,10 @@ const {
  *         schema:
  *           type: integer
  *       - name: categories
- *         description: list of ids of categories that need to search for (for subcategories just send a subcategory id alone in array)
+ *         description: list of ids of categories that need to search for (for subcategories just send a subcategory id alone) splited by "-"
  *         in: query
  *         schema: 
- *           type: array
+ *           type: string
  *           example: [645e325ba7c9a32759c2083a]
  *     produces:
  *       - application/json

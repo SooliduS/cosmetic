@@ -1,57 +1,71 @@
 const Product = require('../../models/productModel');
-const filterProducts = require('../../lib/filterProducts')
+const filterProducts = require('../../lib/filterProducts');
 
 const getAllProducts = async (req, res) => {
+    let { offset, limit } = req.query;
+    const params = filterProducts(req);
 
-    let {offset , limit} = req.query
-    const params = filterProducts(req)
-
-    if (!offset) offset = 0
+    if (!offset) offset = 0;
 
     try {
-        const products = await Product.find(params.filter).sort(params.sort).skip((offset)).limit(limit)
-        return res.status(200).json(products);
+        const products = await Product.find(params.filter)
+            .sort(params.sort)
+            .skip(offset)
+            .limit(limit);
+        const total = await Product.countDocuments(params.filter);
+        return res.status(200).json({ products, total });
     } catch (e) {
         return res.status(500).json({ message: e.message });
     }
 };
 
 const getAmazingOfferProducts = async (req, res) => {
-
-    const {offset , limit} = req.query
-    const params = filterProducts(req)
+    const { offset, limit } = req.query;
+    const params = filterProducts(req);
 
     try {
         const products = await Product.find({
             isAmazingOffer: true,
             discount: { $gte: 1 },
-            ...params.filter
-        }).sort(params.sort).skip(offset).limit(limit)
+            ...params.filter,
+        })
+            .sort(params.sort)
+            .skip(offset)
+            .limit(limit);
 
-        return res.status(200).json(products);
+        const total = await Product.countDocuments({
+            isAmazingOffer: true,
+            discount: { $gte: 1 },
+            ...params.filter,
+        });
+
+        return res.status(200).json({ products, total });
     } catch (e) {
         return res.status(500).json({ message: e.message });
     }
 };
 
 const getNewestProducts = async (req, res) => {
-
-    const {offset , limit} = req.query
-    const params = filterProducts(req)
+    const { offset, limit } = req.query;
+    const params = filterProducts(req);
 
     try {
-        const products = await Product.find(params.filter).sort({ createdAt: -1 }).skip(offset).limit(limit);
+        const products = await Product.find(params.filter)
+            .sort({ createdAt: -1 })
+            .skip(offset)
+            .limit(limit);
 
-        return res.status(200).json(products);
+        const total = await Product.find(params.filter);
+
+        return res.status(200).json({ products, total });
     } catch (e) {
         return res.status(500).json({ message: e.message });
     }
 };
 
 const getMostSalesProducts = async (req, res) => {
-
-    const {offset , limit} = req.query
-    const params = filterProducts(req)
+    const { offset, limit } = req.query;
+    const params = filterProducts(req);
 
     try {
         const products = await Product.find({ ordersCount: { $gt: 1 } })
@@ -59,7 +73,9 @@ const getMostSalesProducts = async (req, res) => {
             .skip(offset)
             .limit(limit);
 
-        return res.status(200).json(products);
+        const total = await Product.countDocuments({ ordersCount: { $gt: 1 } });
+
+        return res.status(200).json({products , total});
     } catch (e) {
         return res.status(500).json({ message: e.message });
     }
@@ -77,7 +93,7 @@ const getProduct = async (req, res) => {
 
         return res.status(200).json(product);
     } catch (e) {
-        return res.sendStatus(500)
+        return res.sendStatus(500);
     }
 };
 
