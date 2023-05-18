@@ -16,11 +16,11 @@ const authController = require('../../controllers/users/authController');
  *           schema:
  *             type: object
  *             properties:
- *               user:
+ *               username:
  *                 type: string
  *                 description: The username of the user to log in
  *                 example: johndoe
- *               pwd:
+ *               password:
  *                 type: string
  *                 description: The password of the user to log in
  *                 example: secret

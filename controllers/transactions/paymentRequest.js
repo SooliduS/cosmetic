@@ -3,7 +3,7 @@ const Transaction = require('../../models/transactionModel');
 const Order = require('../../models/orderModel');
 
 const sendPaymentRequest = async (req, res) => {
-    if (!req.body.orders.length) return res.sendStatus(400);
+    if (!req.body.order) return res.sendStatus(400);
 
     try {
         let payablePrice = 0;

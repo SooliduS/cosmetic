@@ -15,8 +15,8 @@ const options = {
             },
             {
                 url: 'https://cosmetic-backend.onrender.com',
-                description:'deployed version on render.com'
-            }
+                description: 'deployed version on render.com',
+            },
         ],
         components: {
             schemas: {
@@ -152,15 +152,15 @@ const options = {
                         favCategories: {
                             type: 'array',
                             items: {
-                                type:'string',
-                                description:'_id of category'
+                                type: 'string',
+                                description: '_id of category',
                             },
                         },
                         favProducts: {
                             type: 'array',
                             items: {
-                                type:'string',
-                                description:'_id of product'
+                                type: 'string',
+                                description: '_id of product',
                             },
                         },
                         verified: {
@@ -264,9 +264,9 @@ const options = {
                         categories: {
                             type: 'array',
                             items: {
-                                type:'string',
-                                description:'_id of category',
-                                example:'id of category'
+                                type: 'string',
+                                description: '_id of category',
+                                example: 'id of category',
                             },
                             description:
                                 'An array of category IDs that this product belongs to.',
@@ -307,7 +307,7 @@ const options = {
                             type: 'array',
                             items: {
                                 type: 'string',
-                                example:'www.image-url.com'
+                                example: 'www.image-url.com',
                             },
                             description:
                                 'An array of image URLs for the product.',
@@ -316,7 +316,7 @@ const options = {
                             type: 'array',
                             items: {
                                 $ref: '#/components/schemas/Comment',
-                                example:'_idofcomment1213123212'
+                                example: '_idofcomment1213123212',
                             },
                             description:
                                 'An array of comment IDs for the product.',
@@ -325,7 +325,7 @@ const options = {
                             type: 'array',
                             items: {
                                 $ref: '#/components/schemas/ShippingClass',
-                                example:'id of shippingclass'
+                                example: 'id of shippingclass',
                             },
                             description:
                                 'An array of shipping class IDs that apply to the product.',
@@ -379,17 +379,140 @@ const options = {
                             description:
                                 'The number of times the product has been viewed',
                         },
-                        ordersCount :{
-                            type:'number',
-                            default:0,
-                            description:"Number of times that this product has been ordered"
-                        }
+                        ordersCount: {
+                            type: 'number',
+                            default: 0,
+                            description:
+                                'Number of times that this product has been ordered',
+                        },
                     },
-                    required:['name' , 'categories' , 'price' , ]
+                    required: ['name', 'categories', 'price'],
+                },
+            },
+        },
+        paths: {
+            '/product': {
+                post: {
+                    summary: 'Create a new product',
+                    tags: ['Products'],
+                    consumes: ['application/json'],
+                    produces: ['application/json'],
+                    parameters: [
+                        {
+                            name: 'body',
+                            in: 'body',
+                            required: true,
+                            schema: {
+                                type: 'object',
+                                properties: {
+                                    name: {
+                                        type: 'string',
+                                        description:
+                                            'Name or title of the product',
+                                        example: 'Product Name',
+                                    },
+                                    slug: {
+                                        type: 'string',
+                                        description:
+                                            'Unique slug for the product address (not required)',
+                                        example: 'product-name',
+                                    },
+                                    categories: {
+                                        type: 'array',
+                                        description:
+                                            'Array of IDs of categories (parent and children)',
+                                        example: [1, 2, 3],
+                                    },
+                                    price: {
+                                        type: 'integer',
+                                        example: 10,
+                                    },
+                                    brand: {
+                                        type: 'string',
+                                        example: 'Brand Name',
+                                    },
+                                    color: {
+                                        type: 'object',
+                                        properties: {
+                                            rgb: {
+                                                type: 'string',
+                                                example: '(255 , 255 , 255)',
+                                            },
+                                            hex: {
+                                                type: 'string',
+                                                example: '#ffffff',
+                                            },
+                                            name: {
+                                                type: 'string',
+                                                example: 'Blue',
+                                            },
+                                        },
+                                    },
+                                    images: {
+                                        type: 'array',
+                                        description:
+                                            'Array of addresses of the images uploaded to Cloudinary',
+                                        example: ['image1.jpg', 'image2.jpg'],
+                                    },
+                                    tags: {
+                                        type: 'array',
+                                        description: 'Tags',
+                                        example: ['tag1', 'tag2'],
+                                    },
+                                    details: {
+                                        type: 'array',
+                                        description:
+                                            'Array of key-value pairs for details of a product',
+                                        example: [
+                                            {
+                                                key: 'made in',
+                                                value: 'Iran',
+                                            },
+                                            {
+                                                key: 'type',
+                                                value: 'For natural hair',
+                                            },
+                                        ],
+                                    },
+                                    description: {
+                                        type: 'string',
+                                        description:
+                                            'Description of the product',
+                                        example: 'Product description',
+                                    },
+                                    inventory: {
+                                        type: 'number',
+                                        description:
+                                            'Number of products left for sale',
+                                        example: 100,
+                                    },
+                                },
+                            },
+                        },
+                    ],
+                    responses: {
+                        201: {
+                            description: 'A new product has been created',
+                            content: {
+                                'application/json': {
+                                    schema: {
+                                        $ref: '#/components/schemas/Product',
+                                    },
+                                },
+                            },
+                        },
+                        400: {
+                            description: 'Invalid request body',
+                        },
+                        500: {
+                            description: 'Internal server error',
+                        },
+                    },
                 },
             },
         },
     },
+
     apis: ['./routes/*/*.js'],
 };
 

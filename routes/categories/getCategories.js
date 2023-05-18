@@ -8,7 +8,7 @@ const {getAllCategories} = require('../../controllers/categories/getCategoriesCo
  *   get:
  *     summary: Get all categories
  *     tags:
- *       - Getcategories
+ *       - categories
  *     description: Get all categories as an array
  *     produces:
  *       - application/json

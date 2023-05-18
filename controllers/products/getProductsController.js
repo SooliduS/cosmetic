@@ -8,12 +8,40 @@ const getAllProducts = async (req, res) => {
     if (!offset) offset = 0;
 
     try {
+        const result = await Product.aggregate([
+            { $match: params.filter }, // Apply the filter
+            {
+                $group: {
+                    _id: null,
+                    minPrice: { $min: '$price' },
+                    maxPrice: { $max: '$price' },
+                },
+            },
+            {
+                $project: {
+                    _id: 0,
+                    minPrice: 1,
+                    maxPrice: 1,
+                },
+            },
+        ]);
+
+        if (result.length > 0) {
+            const { minPrice, maxPrice } = result[0];
+            console.log('Price Range:');
+            console.log('Minimum Price:', minPrice);
+            console.log('Maximum Price:', maxPrice);
+        } else {
+            console.log('No products found for the given filter.');
+        }
         const products = await Product.find(params.filter)
             .sort(params.sort)
             .skip(offset)
             .limit(limit);
+
         const total = await Product.countDocuments(params.filter);
-        return res.status(200).json({ products, total });
+
+        return res.status(200).json({ products, total , priceRange:result });
     } catch (e) {
         return res.status(500).json({ message: e.message });
     }
@@ -75,21 +103,19 @@ const getMostSalesProducts = async (req, res) => {
 
         const total = await Product.countDocuments({ ordersCount: { $gt: 1 } });
 
-        return res.status(200).json({products , total});
+        return res.status(200).json({ products, total });
     } catch (e) {
         return res.status(500).json({ message: e.message });
     }
 };
 
 const getProduct = async (req, res) => {
-    const productId =
-        req.params.productId || req.params.product_id || req.params.id;
+    const slug = req.params.slug;
 
-    if (!productId)
-        return res.status(400).json({ message: 'product id needed' });
+    if (!slug) return res.status(400).json({ message: 'produc slug needed' });
 
     try {
-        const product = await Product.findById(productId);
+        const product = await Product.findOne({ slug });
 
         return res.status(200).json(product);
     } catch (e) {

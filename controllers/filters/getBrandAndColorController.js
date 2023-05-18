@@ -1,13 +1,19 @@
 const Product = require('../../models/productModel')
+const filterProducts = require('../../lib/filterProducts')
 
 const getBrandsAndColors = async (req ,res) => {
 
-    if(!req.params.categoryId) return res.status(400).json({message:'category id needed'})
+    const { filter } = filterProducts(req)
 
     try{
-        const brands = await Product.find({}).distinct('color.name')
+        const colors = await Product.distinct('colors.name' , filter)
+        const brands = await Product.distinct('brand' , filter)
+
+        return res.status(200).json({colors , brands})
     }catch(e){
         return res.sendStatus(500)
     }
 
 }
+
+module.exports = {getBrandsAndColors}

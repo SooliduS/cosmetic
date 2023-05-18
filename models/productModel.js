@@ -11,6 +11,7 @@ const productSchema = new Schema(
         slug: {
             type: String,
             unique: true,
+            required: true
         },
         categories: [{ type: Schema.Types.ObjectId, ref: 'Category' }],
         price: { type: Number, default: 0 },

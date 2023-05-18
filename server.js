@@ -55,6 +55,7 @@ app.use('/getcategories' , require('./routes/categories/getCategories'))
 app.use('/refresh' , require('./routes/users/refresh'))
 app.use('/logout' , require('./routes/users/logout'))
 app.use('/product' , require('./routes/products/crud'))//all products crud controller
+app.use('/salesmanrequest' , require('./routes/users/salesmanRequest')) //request for earn salesman role
 
 //handle errors
 app.use(errorHandler);

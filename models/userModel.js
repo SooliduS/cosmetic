@@ -31,13 +31,15 @@ const userSchema = new Schema(
             required: true,
             unique: true,
         },
+		accountNumber : String,
         isEmailConfirmed: {
             type: Boolean,
             required: true,
             default: false,
         },
         phoneNumber: String,
-        isPhoneNummberConfirmed:{
+		mobileNumber: String,
+        isMobileNumberConfirmed:{
             type:Boolean,
             required:true,
             default:false
@@ -51,13 +53,15 @@ const userSchema = new Schema(
         refreshToken: String,
         melliCode: String,
         melliCardImg:String,
+        isMelliCardConfirmed:{
+            type:Boolean,
+            default:false
+        },
         verified: { type: Boolean, default: false },
 		active:{type:Boolean , default:true },
+		instagram:String,
         socialMedias:{
-            instagram:{
-                type:String,
-                required:true
-            },
+            instagram:String,
             telegram:String,
             website:String,
             twitter:String,
@@ -66,6 +70,7 @@ const userSchema = new Schema(
             type:Number,
             default:0
         },
+		subordinates:[{type:Schema.Types.ObjectId , ref:'User'}],
         productsForSale:[{type:Schema.Types.ObjectId , ref:'Product'}],
         wallet:{type:Schema.Types.ObjectId , ref:'Wallet'}
     },

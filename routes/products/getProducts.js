@@ -13,7 +13,7 @@ const {
  *   get:
  *     summary: Get all products
  *     tags:
- *       - GetProducts
+ *       - Products
  *     description: Get all products as an array
  *     parameters:
  *       - name: colors
@@ -78,7 +78,7 @@ router.get('/all', getAllProducts);
  *   get:
  *     summary: Get amazing offers
  *     tags:
- *       - GetProducts
+ *       - Products
  *     description: Get amazing offers as an array
  *     parameters:
  *       - name: color
@@ -135,7 +135,7 @@ router.get('/amazingoffers', getAmazingOfferProducts);
  *   get:
  *     summary: Get mostSales products
  *     tags:
- *       - GetProducts
+ *       - Products
  *     description: Get mostSales products as an array
  *     parameters:
  *       - name: color
@@ -192,7 +192,7 @@ router.get('/mostSales', getMostSalesProducts);
  *   get:
  *     summary: Get newest products
  *     tags:
- *       - GetProducts
+ *       - Products
  *     description: Get newest products as an array
  *     parameters:
  *       - name: color
@@ -245,14 +245,14 @@ router.get('/newest', getNewestProducts);
 
 /**
  * @swagger
- * /getproducts/single/{id}:
+ * /getproducts/single/{slug}:
  *   get:
  *     summary: Get a single product by ID
  *     tags:
- *       - GetProducts
+ *       - Products
  *     description: Get a single product by its ID
  *     parameters:
- *       - name: id
+ *       - name: slug
  *         in: path
  *         description: ID of the product to retrieve
  *         required: true
@@ -272,6 +272,6 @@ router.get('/newest', getNewestProducts);
  *       500:
  *         description: Internal server error
  */
-router.get('/single/:id', getProduct);
+router.get('/single/:slug', getProduct);
 
 module.exports = router;
