@@ -17,6 +17,10 @@ const options = {
                 url: 'https://cosmetic-backend.onrender.com',
                 description: 'deployed version on render.com',
             },
+            {
+                url:'https://cosmetic-backend.iran.liara.run',
+                description:'deployed version on liara.ir'
+            }
         ],
         components: {
             schemas: {
