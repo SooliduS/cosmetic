@@ -1,16 +1,37 @@
 const Product = require('../../models/productModel');
 
 const addProduct = async (req, res) => {
-    const product = req.body;
-
     console.log(req.body);
-    if (!product.name)
+    if (!req.body.name)
         return res.status(400).json({ message: 'product name requires' });
     // if(!product.categories) return res.status(400).json({message:'category requires'})
 
+    const {
+        name,
+        slug,
+        categories,
+        price,
+        brand,
+        colors,
+        images,
+        tags,
+        description,
+        inventory,
+    } = req.body;
+    // categories:array colors:{rgb:string , hex:string , name:string} , images:array of string , tags:array of string, inventory:number
+
     try {
         const newProduct = await Product.create({
-            ...req.body,
+            name,
+            slug,
+            categories: categories || [],
+            price,
+            brand,
+            colors: colors || {},
+            images: images || [],
+            tags: tags || [],
+            description,
+            inventory,
             comments: [],
             rating: 3.5,
             ordersCount: 0,

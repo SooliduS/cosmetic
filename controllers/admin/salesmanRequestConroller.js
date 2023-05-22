@@ -2,6 +2,8 @@ const SalesmanRequest = require('../../models/salesmanRequest');
 const User = require('../../models/userModel')
 
 const getSalesmanRequests = async (req, res) => {
+
+    if(req.roles !== 'Admin' && req.roles !== 'Editor') return res.status(403).json({message:'only admin and editor have permission'})
     try {
         const requests = await SalesmanRequest.find({
             confirmed: false,
@@ -16,6 +18,7 @@ const getSalesmanRequests = async (req, res) => {
 
 const handleSalesmanRequest = async (req ,res) => {
 
+    if(req.roles !== 'Admin' && req.roles !== 'Editor') return res.status(403).json({message:'only admin and editor have permission'})
     const {message , requstId , confirmed , products} = req.body //confirmed:boolean  products:array of product ids
 
     if(!requstId) return res.status(400).json({message:'request id needed'})

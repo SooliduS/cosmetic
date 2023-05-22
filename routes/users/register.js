@@ -34,7 +34,6 @@ const {handleNewUser} = require('../../controllers/users/registerController');
  *       '500':
  *         description: Internal server error
  */
-
 router.post('/', handleNewUser);
 
 module.exports = router;
