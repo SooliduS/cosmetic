@@ -70,7 +70,7 @@ const userSchema = new Schema(
             type:Number,
             default:0
         },
-		superior:[{type:Schema.Types.ObjectId , ref:'User'}],
+		superior:{type:Schema.Types.ObjectId , ref:'User'},
         productsForSale:[{type:Schema.Types.ObjectId , ref:'Product'}],
         wallet:{type:Schema.Types.ObjectId , ref:'Wallet'}
     },

@@ -9,7 +9,7 @@ const {handleRefreshToken} = require('../../controllers/users/refreshTokenContro
  *     summary: Refresh access token
  *     tags:
  *       - Users
- *     description: Refreshes the access token using a valid refresh token.
+ *     description: Refreshes the access token using a valid refresh token.1111
  *     responses:
  *       200:
  *         description: Successful operation

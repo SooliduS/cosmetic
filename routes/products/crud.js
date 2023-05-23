@@ -8,6 +8,8 @@ const {deleteProduct} = require('../../controllers/products/deleteProductControl
  * @swagger
  * /product:
  *   post:
+ *     tags: 
+ *       - Products
  *     summary: Add a new product
  *     description: Creates a new product with the provided information.
  *     produces:
@@ -186,8 +188,10 @@ router.put('/' , editProduct )
 
 /**
  * @swagger
- * /deleteProduct:
+ * /product:
  *   delete:
+ *     tags:
+ *      - Products
  *     summary: Delete a product
  *     description: Deletes a product with the provided ID.
  *     produces:

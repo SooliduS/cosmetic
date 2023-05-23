@@ -31,6 +31,7 @@ const handleSalesmanRequest = async (req ,res) => {
 
         foundReq.message = message
         foundReq.confirmed = confirmed
+        foundReq.adminUpdateDate = new Date()
         await foundReq.save()
 
         if(confirmed) {

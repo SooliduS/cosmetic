@@ -57,6 +57,9 @@ app.use('/logout' , require('./routes/users/logout'))
 app.use('/product' , require('./routes/products/crud'))//all products crud controller
 app.use('/salesmanrequest' , require('./routes/users/salesmanRequest')) //request for earn salesman role
 
+//admin//↓
+app.use('/admin/salesmanrequests' , require('./routes/admin/salesmanRequest')) 
+
 //handle errors
 app.use(errorHandler);
 

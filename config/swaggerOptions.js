@@ -1,4 +1,5 @@
 const swaggerJsdoc = require('swagger-jsdoc');
+const ORDER_STATUSES = require('./orderStatuses')
 
 const options = {
     definition: {
@@ -18,9 +19,9 @@ const options = {
                 description: 'deployed version on render.com',
             },
             {
-                url:'https://cosmetic-backend.iran.liara.run',
-                description:'deployed version on liara.ir'
-            }
+                url: 'https://cosmetic-backend.iran.liara.run',
+                description: 'deployed version on liara.ir',
+            },
         ],
         components: {
             schemas: {
@@ -202,56 +203,6 @@ const options = {
                         },
                     },
                 },
-                Category: {
-                    type: 'object',
-                    properties: {
-                        name: {
-                            type: 'string',
-                            description: 'The name of the category',
-                            example: 'Clothing',
-                        },
-                        slug: {
-                            type: 'string',
-                            description: 'The slug of the category',
-                            example: 'clothing',
-                        },
-                        hsCode: {
-                            type: 'string',
-                            description: 'The HS code of the category',
-                            example: '61.09',
-                        },
-                        parentId: {
-                            type: 'string',
-                            description: "The parent category's ID",
-                            example: '60d9cf32f674b86fd0d10ec8',
-                        },
-                        description: {
-                            type: 'string',
-                            description: 'The description of the category',
-                            example: 'Clothing items for all genders and ages',
-                        },
-                        image: {
-                            type: 'string',
-                            description: 'The URL of the category image',
-                            example: 'https://example.com/clothing.jpg',
-                        },
-                        createdAt: {
-                            type: 'string',
-                            format: 'date-time',
-                            description:
-                                'The date and time when the category was created',
-                            example: '2022-05-01T12:00:00.000Z',
-                        },
-                        updatedAt: {
-                            type: 'string',
-                            format: 'date-time',
-                            description:
-                                'The date and time when the category was last updated',
-                            example: '2022-05-01T12:00:00.000Z',
-                        },
-                    },
-                    required: ['name', 'slug'],
-                },
                 Product: {
                     type: 'object',
                     properties: {
@@ -392,10 +343,499 @@ const options = {
                     },
                     required: ['name', 'categories', 'price'],
                 },
+                Brand: {
+                    type: 'object',
+                    properties: {
+                        _id: {
+                            type: 'string',
+                        },
+                        name: {
+                            type: 'string',
+                        },
+                        categories: {
+                            type: 'array',
+                            items: {
+                                type: 'string',
+                            },
+                            description: 'Array of Category IDs',
+                        },
+                        verified: {
+                            type: 'boolean',
+                        },
+                    },
+                },
+                Comment: {
+                    type: 'object',
+                    properties: {
+                        comment: {
+                            type: 'string',
+                        },
+                        isBought: {
+                            type: 'boolean',
+                        },
+                        product: {
+                            type: 'string',
+                            format: 'ObjectId',
+                        },
+                        author: {
+                            type: 'object',
+                            properties: {
+                                id: {
+                                    type: 'string',
+                                    format: 'ObjectId',
+                                },
+                                name: {
+                                    type: 'string',
+                                },
+                            },
+                        },
+                        parentId: {
+                            type: 'string',
+                            format: 'ObjectId',
+                        },
+                        likes: {
+                            type: 'array',
+                            items: {
+                                type: 'string',
+                                format: 'ObjectId',
+                            },
+                        },
+                        rate: {
+                            type: 'number',
+                        },
+                        isConfirmed: {
+                            type: 'boolean',
+                            default: false,
+                        },
+                    },
+                    required: ['comment'],
+                    additionalProperties: false,
+                },
+                Detail: {
+                    type: 'object',
+                    properties: {
+                        name: {
+                            type: 'string',
+                            trim: true,
+                            unique: true,
+                        },
+                        categories: {
+                            type: 'array',
+                            items: {
+                                type: 'string',
+                                format: 'ObjectId',
+                            },
+                        },
+                        verified: {
+                            type: 'boolean',
+                            default: false,
+                        },
+                        values: {
+                            type: 'array',
+                            items: {
+                                type: 'string',
+                                required: true,
+                                trim: true,
+                                unique: true,
+                            },
+                        },
+                    },
+                    required: ['name', 'values'],
+                    additionalProperties: false,
+                },
+                Notification: {
+                    type: 'object',
+                    properties: {
+                        notifType: {
+                            type: 'number',
+                        },
+                        visited: {
+                            type: 'boolean',
+                            default: false,
+                        },
+                        buyer: {
+                            type: 'string',
+                            format: 'ObjectId',
+                        },
+                        product: {
+                            type: 'string',
+                            format: 'ObjectId',
+                        },
+                        order: {
+                            type: 'string',
+                            format: 'ObjectId',
+                        },
+                        comment: {
+                            type: 'string',
+                            format: 'ObjectId',
+                        },
+                    },
+                    required: ['notifType'],
+                    additionalProperties: false,
+                },
+                Option: {
+                    type: 'object',
+                    properties: {
+                        name: {
+                            type: 'string',
+                            trim: true,
+                            unique: true,
+                        },
+                        categories: {
+                            type: 'array',
+                            items: {
+                                type: 'string',
+                                format: 'ObjectId',
+                            },
+                        },
+                        verified: {
+                            type: 'boolean',
+                            default: false,
+                        },
+                        values: {
+                            type: 'array',
+                            items: {
+                                type: 'object',
+                                properties: {
+                                    name: {
+                                        type: 'string',
+                                        required: true,
+                                        trim: true,
+                                        unique: true,
+                                    },
+                                    verified: {
+                                        type: 'boolean',
+                                        default: false,
+                                    },
+                                },
+                                required: ['name'],
+                                additionalProperties: false,
+                            },
+                        },
+                    },
+                    required: ['name'],
+                    additionalProperties: false,
+                },
+                Order: {
+                    type: 'object',
+                    properties: {
+                        buyer: {
+                            type: 'string',
+                            format: 'ObjectId',
+                            required: true,
+                        },
+                        items: {
+                            type: 'array',
+                            items: {
+                                type: 'object',
+                                properties: {
+                                    product: {
+                                        type: 'string',
+                                        format: 'ObjectId',
+                                        required: true,
+                                    },
+                                    quantity: {
+                                        type: 'number',
+                                        required: true,
+                                    },
+                                    price: {
+                                        type: 'number',
+                                        required: true,
+                                    },
+                                },
+                                required: ['product', 'quantity', 'price'],
+                                additionalProperties: false,
+                            },
+                        },
+                        shippingAddress: {
+                            type: 'object',
+                            properties: {
+                                city: {
+                                    type: 'string',
+                                },
+                                postalCode: {
+                                    type: 'string',
+                                },
+                                details: {
+                                    type: 'string',
+                                },
+                                phoneNumber: {
+                                    type: 'string',
+                                },
+                            },
+                        },
+                        paymentMethod: {
+                            type: 'string',
+                            enum: ['idpay'],
+                        },
+                        status: {
+                            type: 'number',
+                            default: 1,
+                            required: true,
+                        },
+                        message: {
+                            type: 'string',
+                            default: 'در انتظار پرداخت',
+                            required: true,
+                            enum: ORDER_STATUSES,
+                        },
+                        orderNum: {
+                            type: 'number',
+                            unique: true,
+                        },
+                        deliveryNum: {
+                            type: 'number',
+                            unique: true,
+                        },
+                        transaction: {
+                            type: 'string',
+                            format: 'ObjectId',
+                        },
+                        taxPrice: {
+                            type: 'number',
+                        },
+                        shippingPrice: {
+                            type: 'number',
+                        },
+                        shippingClass: {
+                            type: 'string',
+                            format: 'ObjectId',
+                        },
+                        totalPrice: {
+                            type: 'number',
+                            required: true,
+                            default: 0,
+                        },
+                        payablePrice: {
+                            type: 'number',
+                            required: true,
+                            default: 0,
+                        },
+                        aff_id: {
+                            type: 'string',
+                            format: 'ObjectId',
+                        },
+                        aff_percent: {
+                            type: 'number',
+                        },
+                        seen: {
+                            type: 'boolean',
+                            default: false,
+                        },
+                    },
+                    required: [
+                        'buyer',
+                        'items',
+                        'status',
+                        'message',
+                        'totalPrice',
+                        'payablePrice',
+                    ],
+                    additionalProperties: false,
+                },
+                Post: {
+                    type: 'object',
+                    properties: {
+                        title: {
+                            type: 'string',
+                            required: true,
+                        },
+                        content: {
+                            type: 'string',
+                            required: false,
+                        },
+                        authorId: {
+                            type: 'string',
+                            format: 'ObjectId',
+                            required: true,
+                        },
+                        comments: {
+                            type: 'string',
+                            format: 'ObjectId',
+                            required: true,
+                        },
+                        views: {
+                            type: 'number',
+                            default: 0,
+                        },
+                        tags: {
+                            type: 'array',
+                            items: {
+                                type: 'string',
+                            },
+                        },
+                        keyWords: {
+                            type: 'array',
+                            items: {
+                                type: 'string',
+                            },
+                        },
+                    },
+                    required: ['title', 'authorId', 'comments'],
+                    additionalProperties: false,
+                },
+                SalesmanRequest: {
+                    type: 'object',
+                    properties: {
+                        user: {
+                            type: 'string',
+                            format: 'ObjectId',
+                        },
+                        confirmed: {
+                            type: 'boolean',
+                            default: false,
+                        },
+                        message: {
+                            type: 'string',
+                            default: 'منتظر بررسی توسط ادمین',
+                        },
+                        adminUpdateDate: {
+                            type: 'string',
+                            format: 'date-time',
+                        },
+                    },
+                    required: [],
+                    additionalProperties: false,
+                },
+                ShippingClass: {
+                    type: 'object',
+                    properties: {
+                        className: {
+                            type: 'string',
+                            trim: true,
+                        },
+                        classDescription: {
+                            type: 'string',
+                        },
+                        cities: {
+                            type: 'array',
+                            items: {
+                                type: 'object',
+                                properties: {
+                                    name: {
+                                        type: 'string',
+                                    },
+                                    price: {
+                                        type: 'number',
+                                    },
+                                },
+                                required: ['name', 'price'],
+                            },
+                        },
+                        isActive: {
+                            type: 'boolean',
+                        },
+                    },
+                    required: [],
+                    additionalProperties: false,
+                },
+                Transaction: {
+                    type: 'object',
+                    properties: {
+                        id: {
+                            type: 'string',
+                        },
+                        sender: {
+                            type: 'string',
+                            format: 'ObjectId',
+                        },
+                        receiver: {
+                            type: 'string',
+                            format: 'ObjectId',
+                        },
+                        amount: {
+                            type: 'number',
+                        },
+                        status: {
+                            type: 'number',
+                            default: 1,
+                            required: true,
+                        },
+                        message: {
+                            type: 'string',
+                            required: true,
+                            default: 'پرداخت انجام نشده است',
+                        },
+                        order: {
+                            type: 'string',
+                            format: 'ObjectId',
+                        },
+                        card_no: {
+                            type: 'string',
+                        },
+                        hashed_card_no: {
+                            type: 'string',
+                        },
+                        date: {
+                            type: 'string',
+                            format: 'date-time',
+                        },
+                        track_id: {
+                            type: 'string',
+                        },
+                    },
+                    required: [
+                        'sender',
+                        'receiver',
+                        'amount',
+                        'status',
+                        'message',
+                    ],
+                    additionalProperties: false,
+                },
+                Wallet: {
+                    type: 'object',
+                    properties: {
+                        owner: {
+                            type: 'string',
+                            format: 'ObjectId',
+                            unique: true,
+                        },
+                        isActive: {
+                            type: 'boolean',
+                            default: true,
+                        },
+                        stock: {
+                            type: 'number',
+                            required: true,
+                            default: 0,
+                        },
+                    },
+                    required: ['owner', 'stock'],
+                    additionalProperties: false,
+                },
+                WalletTransaction: {
+                    type: 'object',
+                    properties: {
+                        wallet: {
+                            type: 'string',
+                            format: 'ObjectId',
+                            ref: 'Wallet',
+                        },
+                        amount: {
+                            type: 'number',
+                        },
+                        transaction: {
+                            type: 'string',
+                            format: 'ObjectId',
+                            ref: 'Transaction',
+                        },
+                        order: {
+                            type: 'string',
+                            format: 'ObjectId',
+                            ref: 'Order',
+                        },
+                        type: {
+                            type: 'string',
+                            enum: ['deposite', 'withdraw'],
+                        },
+                    },
+                    required: ['wallet', 'amount', 'type'],
+                    additionalProperties: false,
+                },
             },
         },
     },
-
     apis: ['./routes/*/*.js'],
 };
 
