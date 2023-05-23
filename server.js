@@ -14,6 +14,7 @@ const connectDB = require('./config/dbConn');
 const swaggerUi = require('swagger-ui-express');
 const specs = require('./config/swaggerOptions');
 const verifyJWT = require('./middlewares/verifyJWT');
+const verifyAdmin = require('./middlewares/verifyAdmin')
 const PORT = process.env.PORT || 3500;
 
 // Connect to MongoDB
@@ -46,19 +47,21 @@ app.use('/', express.static(path.join(__dirname, '/public')));
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs)); //swagger api docs
 app.use('/register' , require('./routes/users/register'))
 app.use('/login' , require('./routes/users/auth'))
+app.use('/refresh' , require('./routes/users/refresh'))
 app.use('/getproducts' , require('./routes/products/getProducts'))
 app.use('/getposts' , require('./routes/posts/getPosts'))
 app.use('/getcategories' , require('./routes/categories/getCategories'))
 
+
 //private routes
-// app.use(verifyJWT)//↓
-app.use('/refresh' , require('./routes/users/refresh'))
+app.use(verifyJWT)//↓
 app.use('/logout' , require('./routes/users/logout'))
-app.use('/product' , require('./routes/products/crud'))//all products crud controller
 app.use('/salesmanrequest' , require('./routes/users/salesmanRequest')) //request for earn salesman role
 
-//admin//↓
+//admin private routes
+app.use(verifyAdmin)//↓
 app.use('/admin/salesmanrequests' , require('./routes/admin/salesmanRequest')) 
+app.use('/product' , require('./routes/products/crud'))//all products crud controller
 
 //handle errors
 app.use(errorHandler);
