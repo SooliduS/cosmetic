@@ -1,5 +1,6 @@
 const User = require('../../models/userModel');
 const bcrypt = require('bcrypt');
+const Wallet = require('../../models/walletModel')
 const { sendValidationEmail } = require('../../lib/sendEmail');
 
 const handleNewUser = async (req, res) => {
@@ -36,6 +37,9 @@ const handleNewUser = async (req, res) => {
             success: `New user ${username} created!`,
             user: result,
         });
+        const wallet = await Wallet.create({
+            owner : req._id
+        })
     } catch (err) {
         res.status(500).json({ message: err.message });
     }

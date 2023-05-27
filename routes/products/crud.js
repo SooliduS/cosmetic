@@ -10,6 +10,7 @@ const {deleteProduct} = require('../../controllers/products/deleteProductControl
  *   post:
  *     tags: 
  *       - Products
+ *       - Admin
  *     summary: Add a new product
  *     description: Creates a new product with the provided information.
  *     produces:
@@ -107,7 +108,7 @@ router.post('/', addProduct);
  * /product:
  *   put:
  *     summary: Edit an exiting product
- *     tags: [Products]
+ *     tags: [Products , Admin]
  *     consumers:
  *       - application/json
  *     produces:
@@ -194,6 +195,7 @@ router.put('/' , editProduct )
  *   delete:
  *     tags:
  *      - Products
+ *      - Admin
  *     summary: Delete a product
  *     description: Deletes a product with the provided ID.
  *     produces:
