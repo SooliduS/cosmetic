@@ -27,7 +27,7 @@ const addProduct = async (req, res) => {
             categories: categories || [],
             price,
             brand,
-            colors: colors || {},
+            colors: colors || [],
             images: images || [],
             tags: tags || [],
             description,

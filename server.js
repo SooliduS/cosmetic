@@ -51,15 +51,17 @@ app.use('/refresh' , require('./routes/users/refresh'))
 app.use('/getproducts' , require('./routes/products/getProducts'))
 app.use('/getposts' , require('./routes/posts/getPosts'))
 app.use('/getcategories' , require('./routes/categories/getCategories'))
+// app.use('/emailconfirmation' , )
 
 
 //private routes
-app.use(verifyJWT)//↓
+// app.use(verifyJWT)//↓
 app.use('/logout' , require('./routes/users/logout'))
 app.use('/salesmanrequest' , require('./routes/users/salesmanRequest')) //request for earn salesman role
+app.use('/order' , require('./routes/orders/crud'))
 
 //admin private routes
-app.use(verifyAdmin)//↓
+// app.use(verifyAdmin)//↓
 app.use('/admin/salesmanrequests' , require('./routes/admin/salesmanRequest')) 
 app.use('/product' , require('./routes/products/crud'))//all products crud controller
 

@@ -18,10 +18,12 @@ const orderSchema = new Schema(
                 },
                 quantity: { type: Number, required: true },
                 price: { type: Number, required: true },
+				commission:Number
             },
         ],
         shippingAddress: {
             city: String,
+            state:String,
             postalCode: String,
             details: String,
             phoneNumber: String,
@@ -62,6 +64,7 @@ const orderSchema = new Schema(
         aff_id: { type: Schema.Types.ObjectId, ref: 'User' },
         aff_percent: Number,
         seen: { type: Boolean, default: false },
+
     },
     { timestamps: true }
 );

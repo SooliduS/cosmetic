@@ -73,14 +73,16 @@ const {deleteProduct} = require('../../controllers/products/deleteProductControl
  *         type: number
  *
  *   ColorInput:
- *     type: object
- *     properties:
- *       rgb:
- *         type: string
- *       hex:
- *         type: string
- *       name:
- *         type: string
+ *     type: array
+ *     items:
+ *       type: object
+ *       properties:
+ *         rgb:
+ *           type: string
+ *         hex:
+ *           type: string
+ *         name:
+ *           type: string
  *
  *   Product:
  *     allOf:

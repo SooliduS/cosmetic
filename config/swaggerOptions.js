@@ -134,6 +134,14 @@ const options = {
                                     minLength: 1,
                                     maxLength: 255,
                                 },
+                                state: {
+                                    type: 'string',
+                                    description:
+                                        "The state of the user's address.",
+                                    example: 'خراسان',
+                                    minLength: 1,
+                                    maxLength: 255,
+                                },
                                 postalCode: {
                                     type: 'number',
                                     example: 123456789,
@@ -553,6 +561,10 @@ const options = {
                                 city: {
                                     type: 'string',
                                 },
+                                state: {
+                                    type: 'string',
+                                },
+                                
                                 postalCode: {
                                     type: 'string',
                                 },

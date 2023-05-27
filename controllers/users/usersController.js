@@ -1,4 +1,5 @@
 const User = require('../../models/userModel');
+const bcrypt = require('bcrypt');
 
 const getAllUsers = async (req, res) => {
     const users = await User.find();
@@ -30,6 +31,54 @@ const getUser = async (req, res) => {
     }
     res.json(user);
 };
+
+const updateUser = async (req , res) => {
+
+    const { username , address , instagram , socialMedias , firstname , lastname , melliCode } = req.body
+
+    try{
+        const foundUser = await User.findById(req._id)
+        if(!foundUser) return res.sendStatus(404)
+
+        const duplicate = await User.findOne({username})
+
+        if(duplicate) return res.status(409).json({message:'username used'})
+ 
+        if(username) foundUser.username = username
+        if(address) foundUser.address = address
+        if(instagram) foundUser.instagram = instagram
+        if(socialMedias) foundUser.socialMedias = socialMedias
+        if(firstname && !foundUser.verified) foundUser.firstname = firstname
+        if(lastname && !foundUser.verified) foundUser.lastname = lastname
+        if(melliCode && !foundUser.verified) foundUser.melliCode = melliCode
+        
+    }catch(e){
+        return res.sendStatus(500)
+    }
+}
+
+const changePassword = async(req ,res) => {
+
+    const {oldPassword , newPassword} = req.body
+
+    try{
+        const foundUser = await User.findById(req._id)
+        const match = await bcrypt.compare(foundUser.password , oldPassword)
+        if(!match) return res.status(403).json({message:'old password is incorrect'})
+
+        const hashedPwd = await bcrypt.hash(newPassword, 10);
+
+        foundUser.password = hashedPwd
+
+        await foundUser.save()
+
+        return res.sendStatus(200)
+
+    }catch(e){
+        return res.sendStatus(500)
+    }
+}
+
 
 module.exports = {
     getAllUsers,

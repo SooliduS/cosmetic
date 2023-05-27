@@ -41,7 +41,7 @@ router.get('/' , getSalesmanRequests)
 
 /**
  * @swagger
- * /admin/salesmanrequest/handle:
+ * /admin/salesmanrequests/handle:
  *   post:
  *     summary: Handle salesman request
  *     tags:

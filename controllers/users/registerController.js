@@ -1,15 +1,18 @@
 const User = require('../../models/userModel');
 const bcrypt = require('bcrypt');
+const { sendValidationEmail } = require('../../lib/sendEmail');
 
 const handleNewUser = async (req, res) => {
-    const { username, password , email , mobileNumber } = req.body;
+    const { username, password, email, mobileNumber } = req.body;
     if (!username || !password)
         return res
             .status(400)
             .json({ message: 'Username and password are required.' });
 
     // check for duplicate usernames in the db
-    const duplicate = await User.findOne({ $or:[{username} , {email}] }).exec();
+    const duplicate = await User.findOne({
+        $or: [{ username }, { email }],
+    }).exec();
     if (duplicate) return res.sendStatus(409); //Conflict
 
     try {
@@ -21,12 +24,18 @@ const handleNewUser = async (req, res) => {
             username: username,
             password: hashedPwd,
             email,
-            mobileNumber
+            mobileNumber,
         });
+
+        //send validation email
+        sendValidationEmail(result.email);
 
         console.log(result);
 
-        res.status(201).json({ success: `New user ${username} created!` , user:result });
+        res.status(201).json({
+            success: `New user ${username} created!`,
+            user: result,
+        });
     } catch (err) {
         res.status(500).json({ message: err.message });
     }

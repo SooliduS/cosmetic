@@ -46,6 +46,7 @@ const userSchema = new Schema(
         },
         address: {
             city: String,
+            state: String,
             postalCode: String,
             details: String,
             phoneNumber: String,
@@ -72,7 +73,8 @@ const userSchema = new Schema(
         },
 		superior:{type:Schema.Types.ObjectId , ref:'User'},
         productsForSale:[{type:Schema.Types.ObjectId , ref:'Product'}],
-        wallet:{type:Schema.Types.ObjectId , ref:'Wallet'}
+        wallet:{type:Schema.Types.ObjectId , ref:'Wallet'},
+		commissionPercentage:Number
     },
     { timestamps: true }
 );
