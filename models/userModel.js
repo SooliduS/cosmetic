@@ -31,7 +31,7 @@ const userSchema = new Schema(
             required: true,
             unique: true,
         },
-		accountNumber : String,
+		accountNumber : {type:Number , unique:true},
         isEmailConfirmed: {
             type: Boolean,
             required: true,

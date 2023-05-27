@@ -1,10 +1,10 @@
 const User = require('../../models/userModel');
 const bcrypt = require('bcrypt');
-const Wallet = require('../../models/walletModel')
+const Wallet = require('../../models/walletModel');
 const { sendValidationEmail } = require('../../lib/sendEmail');
 
 const handleNewUser = async (req, res) => {
-    const { username, password, email, mobileNumber } = req.body;
+    const { username, password, email, mobileNumber, superior } = req.body;
     if (!username || !password)
         return res
             .status(400)
@@ -16,9 +16,29 @@ const handleNewUser = async (req, res) => {
     }).exec();
     if (duplicate) return res.sendStatus(409); //Conflict
 
+    //check superior
+    const foundSuperior = await User.findOne({ accountNumber: superior });
+
+    if (!foundSuperior)
+        return res
+            .status(404)
+            .json({ message: 'superior account number not found' });
+    if (foundSuperior.level < 6)
+        return res.status(406).json({ message: 'superior under level 6' });
+
+    //create wallet
+    const wallet = await Wallet.create({
+        owner: req._id,
+    });
+
     try {
         //encrypt the password
         const hashedPwd = await bcrypt.hash(password, 10);
+
+        // random 9 digits account number
+        const min = 100000000; // Minimum 9-digit number
+        const max = 999999999; // Maximum 9-digit number
+        const accountNumber = Math.floor(Math.random() * (max - min + 1)) + min;
 
         //create and store the new user
         const result = await User.create({
@@ -26,6 +46,9 @@ const handleNewUser = async (req, res) => {
             password: hashedPwd,
             email,
             mobileNumber,
+            wallet,
+            superior,
+            accountNumber
         });
 
         //send validation email
@@ -37,9 +60,6 @@ const handleNewUser = async (req, res) => {
             success: `New user ${username} created!`,
             user: result,
         });
-        const wallet = await Wallet.create({
-            owner : req._id
-        })
     } catch (err) {
         res.status(500).json({ message: err.message });
     }
