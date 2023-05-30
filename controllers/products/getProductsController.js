@@ -24,11 +24,13 @@ const getAllProducts = async (req, res) => {
                     maxPrice: 1,
                 },
             },
-        ]);
+        ])
+            .sort(params.sort)
+            .skip(offset)
+            .limit(limit);
 
-        const colors = await Product.distinct('colors.name' , params.filter)
-        const brands = await Product.distinct('brand' , params.filter)
-
+        const colors = await Product.distinct('colors.name', params.filter);
+        const brands = await Product.distinct('brand', params.filter);
 
         if (result.length > 0) {
             const { minPrice, maxPrice } = result[0];
@@ -45,7 +47,9 @@ const getAllProducts = async (req, res) => {
 
         const total = await Product.countDocuments(params.filter);
 
-        return res.status(200).json({ products, total , priceRange:result , colors , brands});
+        return res
+            .status(200)
+            .json({ products, total, priceRange: result, colors, brands });
     } catch (e) {
         return res.status(500).json({ message: e.message });
     }

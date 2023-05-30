@@ -17,6 +17,7 @@ const addProduct = async (req, res) => {
         tags,
         description,
         inventory,
+        level
     } = req.body;
     // categories:array colors:{rgb:string , hex:string , name:string} , images:array of string , tags:array of string, inventory:number
 
@@ -32,6 +33,7 @@ const addProduct = async (req, res) => {
             tags: tags || [],
             description,
             inventory,
+            level:level || 1000,
             comments: [],
             rating: 3.5,
             ordersCount: 0,

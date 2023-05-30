@@ -64,6 +64,8 @@ const {deleteProduct} = require('../../controllers/products/deleteProductControl
  *         type: array
  *         items:
  *           type: string
+ *       level:
+ *         type: number
  *       tags:
  *         type: array
  *         items:
@@ -129,6 +131,10 @@ router.post('/', addProduct);
  *         schema: 
  *           type: array
  *         description: array of ids of categories(parent and children)
+ *       - name: level
+ *         in: body
+ *         schema: 
+ *           type: number
  *       - name : price
  *         in: body
  *         schema:
