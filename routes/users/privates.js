@@ -88,8 +88,14 @@ router.get('/:id' , getUser)//verifyAdmin
  *                 type: string
  *                 description: The new username.
  *               address:
- *                 type: string
+ *                 type: object
  *                 description: The new address.
+ *                 properties:
+ *                   city: string
+ *                   state: string
+ *                   postalCode: string
+ *                   details: string
+ *                   phoneNumber: string
  *               instagram:
  *                 type: string
  *                 description: The new Instagram handle.
@@ -107,16 +113,24 @@ router.get('/:id' , getUser)//verifyAdmin
  *               melliCode:
  *                 type: string
  *                 description: The new national identification number (only applicable if the user is not verified).
+ *               bankShabaNumber:
+ *                 type: string
+ *                 description: shomare hesabe banki
+ *               bankCardNumber:
+ *                 type: string
+ *                 description: shomare karte banki
  *             example:
  *               username: johnsmith
- *               address: New York City
+ *               address: {city: 'tehren' , state: 'tehran' , phoneNumber: '09124083425' , details: 'tehranpars khiabane rashid' , postalCode: '1651955487'}
  *               instagram: johnsmith23
  *               socialMedias:
  *                 - twitter: johnsmith
  *                 - facebook: johnsmith
  *               firstname: John
  *               lastname: Smith
- *               melliCode: 1234567890
+ *               melliCode: '1234567890'
+ *               bankShabaNumber: 'IR570170000000201761599000'
+ *               bankCardNumber: '6037997398091877'
  *     responses:
  *       '200':
  *         description: The user information was successfully updated.
@@ -181,6 +195,7 @@ router.put('/update' , updateUser)
  */
 router.put('/changepassword' , changePassword)
 
+//deleteuser
 // /**
 //  * @swagger
 //  * /users/{id}:
@@ -257,11 +272,17 @@ router.put('/changepassword' , changePassword)
  *                     type: string
  *                   details:
  *                     type: string
+ *                   state: 
+ *                     type: string
+ *                   phoneNumber:
+ *                     type: string
  *               mobileNumber:
  *                 type: string
  *               melliCardImg:
  *                 type: string
- *               accountNumber:
+ *               bankCardNumber:
+ *                 type: string
+ *               bankShabaNumber:
  *                 type: string
  *               instagram:
  *                 type: string
@@ -343,7 +364,7 @@ router.post('/salesmanrequest' , becomeSalesman)
  *                   type: boolean
  *                   description: Indicates if the user's mobile number is confirmed.
  *                 address:
- *                   type: string
+ *                   type: object
  *                   description: The address of the user.
  *                 melliCode:
  *                   type: string

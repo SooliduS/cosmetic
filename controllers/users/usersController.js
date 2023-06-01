@@ -3,8 +3,11 @@ const bcrypt = require('bcrypt');
 
 
 const getAllUsers = async (req, res) => {
+
+    const {offset , limit} = req.query
+
     try{
-    const users = await User.find();
+    const users = await User.find().skip(Number(offset)).limit(Number(limit));
     if (!users) return res.status(204).json({ message: 'No users found' });
     res.json(users);
     }catch(e){
@@ -50,7 +53,7 @@ const getUser = async (req, res) => {
 
 const updateUser = async (req , res) => {
 
-    const { username , address , instagram , socialMedias , firstname , lastname , melliCode } = req.body
+    const { username , address , instagram , socialMedias , firstname , lastname , melliCode , bankShabaNumber , bankCardNumber } = req.body
 
     try{
         const foundUser = await User.findById(req._id)
@@ -67,6 +70,8 @@ const updateUser = async (req , res) => {
         if(firstname && !foundUser.verified) foundUser.firstname = firstname
         if(lastname && !foundUser.verified) foundUser.lastname = lastname
         if(melliCode && !foundUser.verified) foundUser.melliCode = melliCode
+        if(bankShabaNumber && !foundUser.verified) foundUser.bankShabaNumber = bankShabaNumber
+        if(bankCardNumber && !foundUser.verified) foundUser.bankCardNumber = bankCardNumber
         
     }catch(e){
         return res.status(500).json({ message: e.message });

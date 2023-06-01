@@ -9,7 +9,8 @@ const becomeSalesman = async (req, res) => {
         address,
         mobileNumber,
         melliCardImg,
-        accountNumber,
+        bankCardNumber,
+        bankShabaNumber,
         instagram,
     } = req.body;
 
@@ -20,8 +21,9 @@ const becomeSalesman = async (req, res) => {
         !address ||
         !mobileNumber ||
         !melliCardImg ||
-        !accountNumber ||
-        !instagram
+        !instagram ||
+        !bankCardNumber ||
+        !bankShabaNumber
     )
         return res
             .status(400)
