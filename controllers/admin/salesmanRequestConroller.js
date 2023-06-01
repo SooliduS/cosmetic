@@ -12,7 +12,7 @@ const getSalesmanRequests = async (req, res) => {
 
         return res.status(200).json(requests)
     } catch (e) {
-        return res.sendStatus(500)
+        return res.status(500).json({ message: e.message });
     }
 };
 
@@ -47,7 +47,7 @@ const handleSalesmanRequest = async (req ,res) => {
         return res.status(200).json(foundReq)
 
     }catch(e){
-        return res.sendStatus(500)
+        return res.status(500).json({ message: e.message });
     }
 }
 module.exports = {getSalesmanRequests , handleSalesmanRequest}

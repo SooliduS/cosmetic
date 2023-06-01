@@ -11,7 +11,7 @@ const getBrandsAndColors = async (req ,res) => {
 
         return res.status(200).json({colors , brands})
     }catch(e){
-        return res.sendStatus(500)
+        return res.status(500).json({ message: e.message });
     }
 
 }

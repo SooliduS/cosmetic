@@ -1,11 +1,11 @@
 const Product = require('../../models/productModel');
 
 const editProduct = async (req, res) => {
-    if (!req.body.productId)
-        return res.status(400).json({ message: 'productId needed' });
+    if (!req.params.slug)
+        return res.status(400).json({ message: 'slug needed' });
 
     try {
-        const foundProduct = Product.findById(req.body.productId);
+        const foundProduct = await Product.findById(req.params.slug);
         if (!foundProduct)
             return res.status(404).json({ message: 'product not found' });
 
@@ -35,7 +35,7 @@ const editProduct = async (req, res) => {
 
         return res.status(200).json(foundProduct)
     } catch (e) {
-        return res.sendStatus(500)
+        return res.status(500).json({ message: e.message });
     }
 };
 

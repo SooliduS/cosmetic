@@ -61,7 +61,7 @@ const getProfile = async (req, res) => {
             wallet,
         });
     } catch (e) {
-        return res.sendStatus(500);
+        return res.status(500).json({ message: e.message });
     }
 };
 

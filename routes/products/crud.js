@@ -9,9 +9,9 @@ const {deleteProduct} = require('../../controllers/products/deleteProductControl
  * /product:
  *   post:
  *     tags: 
- *       - Products
+ *       - Product
  *       - Admin
- *     summary: Add a new product
+ *     summary: Add a new product (admin only)
  *     description: Creates a new product with the provided information.
  *     produces:
  *       - application/json
@@ -70,6 +70,18 @@ const {deleteProduct} = require('../../controllers/products/deleteProductControl
  *         type: array
  *         items:
  *           type: string
+ *       details:
+ *         schema: 
+ *           type: array
+ *         items: 
+ *           type: object
+ *           properties:
+ *               key:
+ *                 type: string
+ *                 example: 'made in'
+ *               value:
+ *                 type: string
+ *                 example: iran
  *       description:
  *         type: string
  *       inventory:
@@ -107,91 +119,120 @@ router.post('/', addProduct);
 
 /**
  * @swagger
- * /product:
+ * /product/{slug}:
  *   put:
- *     summary: Edit an exiting product
- *     tags: [Products , Admin]
- *     consumers:
- *       - application/json
+ *     tags: 
+ *       - Product
+ *       - Admin
+ *     summary: Edit a product product (admin only)
+ *     description: Edit a product with the provided information.
  *     produces:
  *       - application/json
  *     parameters:
- *       - name: productId
- *         in: body
+ *       - name: slug
+ *         in: path
+ *         description: ID of the product to retrieve
  *         required: true
- *         description: id of the product that we want to edit
- *       - name: name
- *         in: body
- *         required: true
- *         description: name or title of the product
  *         schema:
  *           type: string
- *       - name: categories
+ *       - name: body
+ *         description: Product object
  *         in: body
- *         schema: 
- *           type: array
- *         description: array of ids of categories(parent and children)
- *       - name: level
- *         in: body
- *         schema: 
- *           type: number
- *       - name : price
- *         in: body
+ *         required: true
  *         schema:
- *           type: integer
- *       - name: brand
- *         in: body
+ *           $ref: '#/definitions/ProductInput'
+ *     responses:
+ *       201:
+ *         description: Successful operation
  *         schema:
- *           type: string
- *       - name: color
- *         in: body
+ *           $ref: '#/definitions/Product'
+ *       400:
+ *         description: Bad request
  *         schema:
  *           type: object
  *           properties:
- *             - name: rgb
+ *             message:
  *               type: string
- *               example: (255 , 255 , 255)
- *             - name: hex
+ *       500:
+ *         description: Internal server error
+ *         schema:
+ *           type: object
+ *           properties:
+ *             message:
  *               type: string
- *               example: #e1e1e1
- *             - name: name
- *               example: blue
- *       - name: images
- *         in: body
- *         description: array of addresses of the images uploaded to cloudinary
+ *
+ * definitions:
+ *   ProductInput:
+ *     type: object
+ *     properties:
+ *       name:
+ *         type: string
+ *       slug:
+ *         type: string
+ *       categories:
+ *         type: array
+ *         items:
+ *           type: string
+ *       price:
+ *         type: number
+ *       brand:
+ *         type: string
+ *       colors:
+ *         $ref: '#/definitions/ColorInput'
+ *       images:
+ *         type: array
+ *         items:
+ *           type: string
+ *       level:
+ *         type: number
+ *       tags:
+ *         type: array
+ *         items:
+ *           type: string
+ *       details:
  *         schema: 
  *           type: array
- *       - name: tags
- *         in: body
- *         description: tags
- *         schema:
- *           type: array
- *         example: ['shampoo' , 'head and shoulders']
- *       - name: details
- *         in: body
- *         description: array of key and values for details of a product
- *         example: [{key:'made in' , value: 'iran'} , {key: 'type' , value: 'for natural hair'}]
- *         schema:
- *           type: array
- *       - name: description
- *         in: body
- *         description: description of product
- *         schema:
+ *         items: 
+ *           type: object
+ *           properties:
+ *               key:
+ *                 type: string
+ *                 example: 'made in'
+ *               value:
+ *                 type: string
+ *                 example: iran
+ *       description:
+ *         type: string
+ *       inventory:
+ *         type: number
+ *
+ *   ColorInput:
+ *     type: array
+ *     items:
+ *       type: object
+ *       properties:
+ *         rgb:
  *           type: string
- *       - name: inventory
- *         in: body
- *         description: number of product that left for sale(موجودی)
- *     responses:
- *       '200':
- *         description: The product updated succesfully
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/Product'
- *       '400':
- *         description: Invalid request body
- *       '500':
- *         description: Internal server error
+ *         hex:
+ *           type: string
+ *         name:
+ *           type: string
+ *
+ *   Product:
+ *     allOf:
+ *       - $ref: '#/definitions/ProductInput'
+ *       - type: object
+ *         properties:
+ *           _id:
+ *             type: string
+ *           comments:
+ *             type: array
+ *             items:
+ *               type: object
+ *           rating:
+ *             type: number
+ *           ordersCount:
+ *             type: number
  */
 router.put('/' , editProduct )
 
@@ -200,9 +241,9 @@ router.put('/' , editProduct )
  * /product:
  *   delete:
  *     tags:
- *      - Products
+ *      - Product
  *      - Admin
- *     summary: Delete a product
+ *     summary: Delete a product (admin only)
  *     description: Deletes a product with the provided ID.
  *     produces:
  *       - application/json

@@ -1,5 +1,5 @@
 const swaggerJsdoc = require('swagger-jsdoc');
-const ORDER_STATUSES = require('./orderStatuses')
+const ORDER_STATUSES = require('./orderStatuses');
 
 const options = {
     definition: {
@@ -564,7 +564,7 @@ const options = {
                                 state: {
                                     type: 'string',
                                 },
-                                
+
                                 postalCode: {
                                     type: 'string',
                                 },
@@ -849,6 +849,13 @@ const options = {
         },
     },
     apis: ['./routes/*/*.js'],
+    // Other Swagger UI options...
+    customSiteOptions: {
+        requestInterceptor: (request) => {
+            request.headers['Authorization'] = 'Bearer your-token'; // Set the desired header
+            return request;
+        },
+    },
 };
 
 const specs = swaggerJsdoc(options);

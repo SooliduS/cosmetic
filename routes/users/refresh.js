@@ -8,7 +8,7 @@ const {handleRefreshToken} = require('../../controllers/users/refreshTokenContro
  *   get:
  *     summary: Refresh access token
  *     tags:
- *       - Users
+ *       - /
  *     description: Refreshes the access token using a valid refresh token.1111
  *     responses:
  *       200:

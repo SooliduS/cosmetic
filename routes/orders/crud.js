@@ -1,5 +1,6 @@
 const router = require('express').Router()
 const {newOrder} = require('../../controllers/orders/newOrderController')
+const {getOrders} = require('../../controllers/orders/getOrdersController')
 
 /**
  * @swagger
@@ -7,7 +8,7 @@ const {newOrder} = require('../../controllers/orders/newOrderController')
  *   post:
  *     summary: Create a new order
  *     tags:
- *       - Orders
+ *       - Order
  *     requestBody:
  *       required: true
  *       content:
@@ -67,5 +68,6 @@ const {newOrder} = require('../../controllers/orders/newOrderController')
  *         description: Internal server error
  */
 router.post('/create' , newOrder)
+router.get('/all', getOrders) // admin only
 
 module.exports = router

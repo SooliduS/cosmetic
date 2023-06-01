@@ -59,7 +59,7 @@ const becomeSalesman = async (req, res) => {
                 user,
             });
     } catch (e) {
-        return res.sendStatus(500);
+        return res.status(500).json({ message: e.message });
     }
 };
 

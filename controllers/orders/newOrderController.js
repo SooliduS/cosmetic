@@ -85,7 +85,7 @@ const newOrder = async (req, res) => {
 
         res.status(201).json(newOrder);
     } catch (e) {
-        res.sendStatus(500);
+        res.status(500).json({ message: e.message });
     }
 };
 

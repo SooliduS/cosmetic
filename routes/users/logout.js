@@ -7,7 +7,7 @@ const {handleLogout} = require('../../controllers/users/logoutController');
  * /logout:
  *   delete:
  *     tags: 
- *       - Users
+ *       - /
  *     summary: Logout a user by deleting the refresh token from database and clearing cookies
  *     security:
  *       - bearerAuth: []

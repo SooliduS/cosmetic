@@ -145,9 +145,7 @@ const verifyPayment = async (req, res) => {
         );
     } catch (e) {
         console.log(e);
-        res.status(500).json({
-            message: 'An error occurred while verifying payment.',
-        });
+        return res.status(500).json({ message: e.message });
     } finally {
         await session.endSession();
     }

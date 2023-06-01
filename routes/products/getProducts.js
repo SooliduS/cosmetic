@@ -13,7 +13,7 @@ const {
  *   get:
  *     summary: Get all products
  *     tags:
- *       - Products
+ *       - getProducts
  *     description: Get all products as an array
  *     parameters:
  *       - name: colors
@@ -78,7 +78,7 @@ router.get('/all', getAllProducts);
  *   get:
  *     summary: Get amazing offers
  *     tags:
- *       - Products
+ *       - getProducts
  *     description: Get amazing offers as an array
  *     parameters:
  *       - name: color
@@ -135,7 +135,7 @@ router.get('/amazingoffers', getAmazingOfferProducts);
  *   get:
  *     summary: Get mostSales products
  *     tags:
- *       - Products
+ *       - getProducts
  *     description: Get mostSales products as an array
  *     parameters:
  *       - name: color
@@ -192,7 +192,7 @@ router.get('/mostSales', getMostSalesProducts);
  *   get:
  *     summary: Get newest products
  *     tags:
- *       - Products
+ *       - getProducts
  *     description: Get newest products as an array
  *     parameters:
  *       - name: color
@@ -249,7 +249,7 @@ router.get('/newest', getNewestProducts);
  *   get:
  *     summary: Get a single product by ID
  *     tags:
- *       - Products
+ *       - getProducts
  *     description: Get a single product by its ID
  *     parameters:
  *       - name: slug

@@ -26,8 +26,8 @@ const getAllProducts = async (req, res) => {
             },
         ])
             .sort(params.sort)
-            .skip(offset)
-            .limit(limit);
+            .skip(Number(offset))
+            .limit(Number(limit));
 
         const colors = await Product.distinct('colors.name', params.filter);
         const brands = await Product.distinct('brand', params.filter);

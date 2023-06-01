@@ -3,13 +3,19 @@ const bcrypt = require('bcrypt');
 
 
 const getAllUsers = async (req, res) => {
+    try{
     const users = await User.find();
     if (!users) return res.status(204).json({ message: 'No users found' });
     res.json(users);
+    }catch(e){
+        return res.status(500).json({ message: e.message });
+    }
+
 };
 
 const deleteUser = async (req, res) => {
-    if (!req?.body?.id)
+    try{
+ if (!req?.body?.id)
         return res.status(400).json({ message: 'User ID required' });
     const user = await User.findOne({ _id: req.body.id }).exec();
     if (!user) {
@@ -19,10 +25,15 @@ const deleteUser = async (req, res) => {
     }
     const result = await user.deleteOne({ _id: req.body.id });
     res.json(result);
+    }catch(e){
+        return res.status(500).json({ message: e.message });
+    }
+   
 };
 
 const getUser = async (req, res) => {
-    if (!req?.params?.id)
+    try{
+  if (!req?.params?.id)
         return res.status(400).json({ message: 'User ID required' });
     const user = await User.findOne({ _id: req.params.id }).exec();
     if (!user) {
@@ -31,6 +42,10 @@ const getUser = async (req, res) => {
             .json({ message: `User ID ${req.params.id} not found` });
     }
     res.json(user);
+    }catch(e){
+        return res.status(500).json({ message: e.message });
+    }
+  
 };
 
 const updateUser = async (req , res) => {
@@ -54,7 +69,7 @@ const updateUser = async (req , res) => {
         if(melliCode && !foundUser.verified) foundUser.melliCode = melliCode
         
     }catch(e){
-        return res.sendStatus(500)
+        return res.status(500).json({ message: e.message });
     }
 }
 
@@ -76,7 +91,7 @@ const changePassword = async(req ,res) => {
         return res.sendStatus(200)
 
     }catch(e){
-        return res.sendStatus(500)
+        return res.status(500).json({ message: e.message });
     }
 }
 

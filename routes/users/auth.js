@@ -7,7 +7,7 @@ const authController = require('../../controllers/users/authController');
  * /login:
  *   post:
  *     tags:
- *       - Users
+ *       - /
  *     summary: Logs in a user and returns an access token
  *     requestBody:
  *       required: true

@@ -8,7 +8,7 @@ const {handleNewUser} = require('../../controllers/users/registerController');
  *   post:
  *     summary: Handle new user
  *     tags:
- *       - Users
+ *       - /
  *     requestBody:
  *       required: true
  *       content:

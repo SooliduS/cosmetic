@@ -55,15 +55,14 @@ app.use('/getcategories' , require('./routes/categories/getCategories'))
 
 
 //private routes
-app.use(verifyJWT)//↓
+// app.use(verifyJWT)//↓
 app.use('/logout' , require('./routes/users/logout'))
-app.use('/salesmanrequest' , require('./routes/users/salesmanRequest')) //request for earn salesman role
 app.use('/order' , require('./routes/orders/crud'))
-app.use('/profile' , require('./routes/users/profile') )
-app.use('/users',require('./routes/users/crud'))
+app.use('/users',require('./routes/users/privates'))
+app.use('/post' , require('./routes/posts/crud'))
 
 //admin private routes
-app.use(verifyAdmin)//↓
+// app.use(verifyAdmin)//↓
 app.use('/admin/salesmanrequests' , require('./routes/admin/salesmanRequest')) 
 app.use('/product' , require('./routes/products/crud'))//all products crud controller
 
