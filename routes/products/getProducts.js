@@ -56,6 +56,11 @@ const {
  *         schema: 
  *           type: string
  *           example: 645e325ba7c9a32759c2083a-645e325ba7c9a32759c2083a-645e325ba7c9a32759c2083a
+ *       - name: searchName
+ *         description: the search word that the products name include
+ *         in: query
+ *         type: string
+ *         example: شامپو
  *     produces:
  *       - application/json
  *     responses:
