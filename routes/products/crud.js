@@ -50,10 +50,8 @@ const {deleteProduct} = require('../../controllers/products/deleteProductControl
  *         type: string
  *       slug:
  *         type: string
- *       categories:
- *         type: array
- *         items:
- *           type: string
+ *       category:
+ *         type: string
  *       price:
  *         type: number
  *       brand:
@@ -169,10 +167,8 @@ router.post('/', addProduct);
  *         type: string
  *       slug:
  *         type: string
- *       categories:
- *         type: array
- *         items:
- *           type: string
+ *       category:
+ *         type: string
  *       price:
  *         type: number
  *       brand:

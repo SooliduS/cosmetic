@@ -12,7 +12,7 @@ const productSchema = new Schema(
             type: String,
             unique: true,
         },
-        categories: [{ type: Schema.Types.ObjectId, ref: 'Category' }],
+        category: { type: Schema.Types.ObjectId, ref: 'Category' },
         price: { type: Number, default: 0 },
         isAmazingOffer: {
             type: Boolean,

@@ -12,7 +12,7 @@ const editProduct = async (req, res) => {
         const editableProperties = [
             'name',
             'slug',
-            'categories',
+            'category',
             'price',
             'isAmazingOffer',
             'discount',

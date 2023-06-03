@@ -9,7 +9,7 @@ const addProduct = async (req, res) => {
     const {
         name,
         slug,
-        categories,
+        category,
         price,
         brand,
         colors,
@@ -26,7 +26,7 @@ const addProduct = async (req, res) => {
         const newProduct = await Product.create({
             name,
             slug,
-            categories: categories || [],
+            category,
             price,
             brand,
             colors: colors || [],
