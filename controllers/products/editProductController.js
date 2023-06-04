@@ -5,7 +5,7 @@ const editProduct = async (req, res) => {
         return res.status(400).json({ message: 'slug needed' });
 
     try {
-        const foundProduct = await Product.findById(req.params.slug);
+        const foundProduct = await Product.findOne({slug:req.params.slug});
         if (!foundProduct)
             return res.status(404).json({ message: 'product not found' });
 
