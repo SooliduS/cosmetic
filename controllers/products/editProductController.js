@@ -3,7 +3,7 @@ const Product = require('../../models/productModel');
 const editProduct = async (req, res) => {
     if (!req.params.slug)
         return res.status(400).json({ message: 'slug needed' });
-
+    console.log(req.body);
     try {
         const foundProduct = await Product.findOne({slug:req.params.slug});
         if (!foundProduct)
@@ -27,7 +27,8 @@ const editProduct = async (req, res) => {
             'inventory',
         ];
 
-        Object(req.body).keys.map(async (key) => {
+        Object.keys
+        Object.keys(req.body).map(async (key) => {
             if (!editableProperties.includes(key)) return;
             foundProduct[key] = req.body[key];
         });
