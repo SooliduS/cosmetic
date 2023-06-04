@@ -51,6 +51,7 @@ app.use('/refresh' , require('./routes/users/refresh'))
 app.use('/getproducts' , require('./routes/products/getProducts'))
 app.use('/getposts' , require('./routes/posts/getPosts'))
 app.use('/getcategories' , require('./routes/categories/getCategories'))
+app.use('/getfilters' , require('./routes/filters/getFilters'))
 // app.use('/emailconfirmation' , )
 
 
