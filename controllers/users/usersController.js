@@ -1,13 +1,15 @@
 const User = require('../../models/userModel');
 const bcrypt = require('bcrypt');
+const filterUsers = require('../../lib/filterUsers')
 
 
 const getAllUsers = async (req, res) => {
 
+    const {sort , filter} = filterUsers(req)
     const {offset , limit} = req.query
 
     try{
-    const users = await User.find().skip(Number(offset)).limit(Number(limit));
+    const users = await User.find(filter,{refreshToken:0}).sort(sort).skip(Number(offset)).limit(Number(limit));
     if (!users) return res.status(204).json({ message: 'No users found' });
     res.json(users);
     }catch(e){
@@ -38,7 +40,7 @@ const getUser = async (req, res) => {
     try{
   if (!req?.params?.id)
         return res.status(400).json({ message: 'User ID required' });
-    const user = await User.findOne({ _id: req.params.id }).exec();
+    const user = await User.findOne({ _id: req.params.id } ,{refreshToken:0}).exec();
     if (!user) {
         return res
             .status(204)
@@ -72,6 +74,10 @@ const updateUser = async (req , res) => {
         if(melliCode && !foundUser.verified) foundUser.melliCode = melliCode
         if(bankShabaNumber && !foundUser.verified) foundUser.bankShabaNumber = bankShabaNumber
         if(bankCardNumber && !foundUser.verified) foundUser.bankCardNumber = bankCardNumber
+
+        await foundUser.save()
+        
+        res.status(200).json({...foundUser , refreshToken:null})
         
     }catch(e){
         return res.status(500).json({ message: e.message });

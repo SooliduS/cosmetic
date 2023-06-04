@@ -12,6 +12,41 @@ const verifyAdmin = require('../../middlewares/verifyAdmin')
  *     tags:
  *       - Users
  *       - Admin
+ *     parameters:
+ *       - name: name
+ *         description: search firstname or lastname or username
+ *         in: query
+ *         example: username
+ *         schema:
+ *           type: string
+ *       - name: level
+ *         description: level of the user from 1 to 10
+ *         in: query
+ *         schema:
+ *           type: string
+ *         example: 3
+ *       - name: melliCode
+ *         description: search melliCode
+ *         in: query
+ *         schema:
+ *           type: string
+ *         example: 0016836502
+ *       - name: sort
+ *         description: how to sort
+ *         in: query
+ *         schema:
+ *           type: string
+ *           enum: [leveluptodown , leveldowntoup , name , roles ]
+ *       - name: offset
+ *         description: the number of the starting item
+ *         in: query
+ *         schema:
+ *           type: integer
+ *       - name: limit
+ *         description: number of items to send
+ *         in: query
+ *         schema:
+ *           type: integer
  *     responses:
  *       '200':
  *         description: A list of users
