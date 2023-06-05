@@ -24,6 +24,9 @@ const {handleNewUser} = require('../../controllers/users/registerController');
  *                 type: string
  *               mobileNumber:
  *                 type: string
+ *               superior:
+ *                 type: string
+ *                 description: account number of the superior
  *     responses:
  *       '201':
  *         description: New user created

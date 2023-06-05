@@ -56,14 +56,14 @@ app.use('/getfilters' , require('./routes/filters/getFilters'))
 
 
 //private routes
-// app.use(verifyJWT)//↓
+app.use(verifyJWT)//↓
 app.use('/logout' , require('./routes/users/logout'))
 app.use('/order' , require('./routes/orders/crud'))
 app.use('/users',require('./routes/users/privates'))
 app.use('/post' , require('./routes/posts/crud'))
 
 //admin private routes
-// app.use(verifyAdmin)//↓
+app.use(verifyAdmin)//↓
 app.use('/admin/salesmanrequests' , require('./routes/admin/salesmanRequest')) 
 app.use('/product' , require('./routes/products/crud'))//all products crud controller
 

@@ -10,12 +10,13 @@ const getOrders = async (req, res) => {
     const { sort, filter } = filterOrders(req);
 
     try {
+        const total = await Order.countDocuments(filter)
         const orders = await Order.find(filter)
             .sort(sort)
             .skip(Number(offset))
             .limit(Number(limit));
 
-            return res.status(200).json(orders)
+            return res.status(200).json({orders , total})
     } catch (e) {
         return res.status(500).json({ message: e.message });
     }

@@ -8,7 +8,7 @@ const getProfile = async (req, res) => {
         if (!profile)
             return res.status(404).json({ message: 'user not found' });
 
-        if (!profile.wallet._id)
+        if (!profile?.wallet?._id)
             profile.wallet = await Wallet.create({ owner: req._id });
 
         const {

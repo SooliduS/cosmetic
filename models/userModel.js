@@ -74,7 +74,6 @@ const userSchema = new Schema(
             default:0
         },
 		superior:{type:Schema.Types.ObjectId , ref:'User'},
-        productsForSale:[{type:Schema.Types.ObjectId , ref:'Product'}],
         wallet:{type:Schema.Types.ObjectId , ref:'Wallet'},
 		commissionPercentage:Number
     },

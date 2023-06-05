@@ -30,7 +30,7 @@ const handleLogin = async (req, res) => {
         const refreshToken = jwt.sign(
             { username: foundUser.username },
             process.env.REFRESH_TOKEN_SECRET,
-            { expiresIn: '1d' }
+            { expiresIn: '10d' }
         );
         // Saving refreshToken with current user
         foundUser.refreshToken = refreshToken;
@@ -42,7 +42,7 @@ const handleLogin = async (req, res) => {
             sameSite: 'None',
             maxAge: 24 * 60 * 60 * 1000,
         }); //secure: true,
-        res.json({ accessToken ,username:foundUser.username , _id:foundUser._id , roles ,secure:true  });
+        res.json({ accessToken ,username:foundUser.username , _id:foundUser._id , roles   });
     } else {
         res.sendStatus(401);
     }

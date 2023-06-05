@@ -1,7 +1,9 @@
 const router = require('express').Router()
 const { getAllUsers , getUser , updateUser , changePassword , deleteUser} = require('../../controllers/users/usersController')
-const {becomeSalesman} = require ('../../controllers/users/salesmanRequst')
+const {becomeSalesman, getSalesmanRequest} = require ('../../controllers/users/salesmanRequst')
 const {getProfile} = require('../../controllers/users/getProfile')
+const {getAllSubordinates} = require('../../controllers/users/getSubordinates')
+
 const verifyAdmin = require('../../middlewares/verifyAdmin')
 
 /**
@@ -50,12 +52,6 @@ const verifyAdmin = require('../../middlewares/verifyAdmin')
  *     responses:
  *       '200':
  *         description: A list of users
- *         content:
- *           application/json:
- *             schema:
- *               type: array
- *               items:
- *                 $ref: '#/components/schemas/User'
  *       '204':
  *         description: No users found
  *         content:
@@ -65,44 +61,110 @@ const verifyAdmin = require('../../middlewares/verifyAdmin')
  *       '500':
  *         description: Internal server error
  */
-router.get('/all' ,  getAllUsers )//verifyAdmin
+router.get('/all' , verifyAdmin , getAllUsers )//verifyAdmin
 
 /**
  * @swagger
- * /users/{id}:
+ * /users/profile:
  *   get:
- *     summary: Get user by ID (admin only)
+ *     summary: Get user profile
  *     tags:
- *       - Admin
  *       - Users
- *     parameters:
- *       - name: id
- *         in: path
- *         description: User ID
- *         required: true
- *         schema:
- *           type: string
+ *     security:
+ *       - bearerAuth: []
  *     responses:
  *       '200':
- *         description: The user information was successfully retrieved.
+ *         description: User profile retrieved successfully.
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/User'
- *       '204':
- *         description: The user with the provided ID was not found.
+ *               type: object
+ *               properties:
+ *                 username:
+ *                   type: string
+ *                   description: The username of the user.
+ *                 firstname:
+ *                   type: string
+ *                   description: The first name of the user.
+ *                 lastname:
+ *                   type: string
+ *                   description: The last name of the user.
+ *                 roles:
+ *                   type: array
+ *                   items:
+ *                     type: string
+ *                   description: The roles assigned to the user.
+ *                 email:
+ *                   type: string
+ *                   description: The email address of the user.
+ *                 accounNumber:
+ *                   type: string
+ *                   description: The account number of the user.
+ *                 isEmailConfirmed:
+ *                   type: boolean
+ *                   description: Indicates if the user's email is confirmed.
+ *                 phoneNumber:
+ *                   type: string
+ *                   description: The phone number of the user.
+ *                 mobileNumber:
+ *                   type: string
+ *                   description: The mobile number of the user.
+ *                 isMobileNumberConfirmed:
+ *                   type: boolean
+ *                   description: Indicates if the user's mobile number is confirmed.
+ *                 address:
+ *                   type: object
+ *                   description: The address of the user.
+ *                 melliCode:
+ *                   type: string
+ *                   description: The national identification number of the user.
+ *                 isMelliCardConfimed:
+ *                   type: boolean
+ *                   description: Indicates if the user's national identification card is confirmed.
+ *                 verified:
+ *                   type: boolean
+ *                   description: Indicates if the user is verified.
+ *                 active:
+ *                   type: boolean
+ *                   description: Indicates if the user is active.
+ *                 instagram:
+ *                   type: string
+ *                   description: The Instagram handle of the user.
+ *                 socialMedias:
+ *                   type: array
+ *                   items:
+ *                     type: string
+ *                   description: The social media handles of the user.
+ *                 level:
+ *                   type: number
+ *                   description: The level of the user.
+ *                 superior:
+ *                   type: string
+ *                   description: The account number of the user's superior.
+ *                 productsForSale:
+ *                   type: array
+ *                   items:
+ *                     type: string
+ *                   description: The products for sale by the user.
+ *                 commissionPercentage:
+ *                   type: number
+ *                   description: The commission percentage of the user.
+ *                 wallet:
+ *                   $ref: '#/components/schemas/Wallet'
+ *       '404':
+ *         description: User not found.
  *         content:
  *           application/json:
  *             example:
- *               message: User ID not found
- *       '400':
- *         description: User ID parameter is required.
+ *               message: User not found.
+ *       '500':
+ *         description: An error occurred while retrieving the user profile.
  *         content:
  *           application/json:
  *             example:
- *               message: User ID required
+ *               message: An error occurred while retrieving the user profile.
  */
-router.get('/:id' , getUser)//verifyAdmin
+router.get('/profile' , getProfile)
 
 /**
  * @swagger
@@ -230,6 +292,43 @@ router.put('/update' , updateUser)
  */
 router.put('/changepassword' , changePassword)
 
+/**
+ * @swagger
+ * /users/{id}:
+ *   get:
+ *     summary: Get user by ID (admin only)
+ *     tags:
+ *       - Admin
+ *       - Users
+ *     parameters:
+ *       - name: id
+ *         in: path
+ *         description: User ID
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       '200':
+ *         description: The user information was successfully retrieved.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/User'
+ *       '204':
+ *         description: The user with the provided ID was not found.
+ *         content:
+ *           application/json:
+ *             example:
+ *               message: User ID not found
+ *       '400':
+ *         description: User ID parameter is required.
+ *         content:
+ *           application/json:
+ *             example:
+ *               message: User ID required
+ */
+router.get('/:id', verifyAdmin , getUser)//verifyAdmin
+
 //deleteuser
 // /**
 //  * @swagger
@@ -351,105 +450,66 @@ router.post('/salesmanrequest' , becomeSalesman)
 
 /**
  * @swagger
- * /users/profile:
+ * /users/getsalesmanrequst:
  *   get:
- *     summary: Get user profile
+ *     summary: Get the request info 
  *     tags:
  *       - Users
- *     security:
- *       - bearerAuth: []
+ */
+router.get('/getsalesmanrequest' , getSalesmanRequest)
+
+/**
+ * @swagger
+ * /users/subordinates:
+ *   get:
+ *     summary: Get subordinates by superior (user that has subusers)
+ *     tags:
+ *       - Users
+ *     parameters:
+ *       - name: name
+ *         description: search firstname or lastname or username
+ *         in: query
+ *         example: username
+ *         schema:
+ *           type: string
+ *       - name: level
+ *         description: level of the user from 1 to 10
+ *         in: query
+ *         schema:
+ *           type: string
+ *         example: 3
+ *       - name: sort
+ *         description: how to sort
+ *         in: query
+ *         schema:
+ *           type: string
+ *           enum: [ leveluptodown , leveldowntoup , name  ]
+ *       - name: offset
+ *         description: the number of the starting item
+ *         in: query
+ *         schema:
+ *           type: integer
+ *       - name: limit
+ *         description: number of items to send
+ *         in: query
+ *         schema:
+ *           type: integer
  *     responses:
  *       '200':
- *         description: User profile retrieved successfully.
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 username:
- *                   type: string
- *                   description: The username of the user.
- *                 firstname:
- *                   type: string
- *                   description: The first name of the user.
- *                 lastname:
- *                   type: string
- *                   description: The last name of the user.
- *                 roles:
- *                   type: array
- *                   items:
- *                     type: string
- *                   description: The roles assigned to the user.
- *                 email:
- *                   type: string
- *                   description: The email address of the user.
- *                 accounNumber:
- *                   type: string
- *                   description: The account number of the user.
- *                 isEmailConfirmed:
- *                   type: boolean
- *                   description: Indicates if the user's email is confirmed.
- *                 phoneNumber:
- *                   type: string
- *                   description: The phone number of the user.
- *                 mobileNumber:
- *                   type: string
- *                   description: The mobile number of the user.
- *                 isMobileNumberConfirmed:
- *                   type: boolean
- *                   description: Indicates if the user's mobile number is confirmed.
- *                 address:
- *                   type: object
- *                   description: The address of the user.
- *                 melliCode:
- *                   type: string
- *                   description: The national identification number of the user.
- *                 isMelliCardConfimed:
- *                   type: boolean
- *                   description: Indicates if the user's national identification card is confirmed.
- *                 verified:
- *                   type: boolean
- *                   description: Indicates if the user is verified.
- *                 active:
- *                   type: boolean
- *                   description: Indicates if the user is active.
- *                 instagram:
- *                   type: string
- *                   description: The Instagram handle of the user.
- *                 socialMedias:
- *                   type: array
- *                   items:
- *                     type: string
- *                   description: The social media handles of the user.
- *                 level:
- *                   type: number
- *                   description: The level of the user.
- *                 superior:
- *                   type: string
- *                   description: The account number of the user's superior.
- *                 productsForSale:
- *                   type: array
- *                   items:
- *                     type: string
- *                   description: The products for sale by the user.
- *                 commissionPercentage:
- *                   type: number
- *                   description: The commission percentage of the user.
- *                 wallet:
- *                   $ref: '#/components/schemas/Wallet'
- *       '404':
- *         description: User not found.
+ *         description: A list of subordinates
+ *       '204':
+ *         description: No users found
  *         content:
  *           application/json:
  *             example:
- *               message: User not found.
+ *               message: No users found
  *       '500':
- *         description: An error occurred while retrieving the user profile.
- *         content:
- *           application/json:
- *             example:
- *               message: An error occurred while retrieving the user profile.
+ *         description: Internal server error
  */
-router.get('/profile' , getProfile)
+router.get('/subordinates' , getAllSubordinates)
+
+
+
+
 
 module.exports = router

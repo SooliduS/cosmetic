@@ -65,4 +65,15 @@ const becomeSalesman = async (req, res) => {
     }
 };
 
-module.exports = { becomeSalesman };
+const getSalesmanRequest = async(req , res) => {
+    try{
+        const request = await SalesmanRequest.findOne({user:req._id})
+
+        console.log(request);
+        res.status(200).json(request)
+    }catch(e){
+        res.status(500).json({message:e.message})
+    }
+}
+
+module.exports = { becomeSalesman , getSalesmanRequest };

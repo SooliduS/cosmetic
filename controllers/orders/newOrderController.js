@@ -3,7 +3,7 @@ const User = require('../../models/userModel');
 const Product = require('../../models/productModel');
 
 const newOrder = async (req, res) => {
-    const { items, address, paymentMethod, aff_id } = req.body; //shippingClass
+    const { items, address, paymentMethod } = req.body; //shippingClass
     // items:array of products
     //address: {postalCode , detail , city , phoneNumber}
     //paymentMethod: enum:['idpay']
@@ -26,15 +26,6 @@ const newOrder = async (req, res) => {
     const buyer = req._id;
 
     try {
-        // get aff user
-        let affUser;
-        if (aff_id) {
-            affUser = await User.findOne({
-                _id: aff_id || req._id,
-                'roles.Salesman': 1373,
-                active: true,
-            });
-        }
         //get price and add commission
         let totalPrice = 0;
         let affCommission = 0;
@@ -45,13 +36,16 @@ const newOrder = async (req, res) => {
                 const itemPrice = foundProduct.price * item.quantity;
                 totalPrice += itemPrice;
 
-                // check if it's in the affliators special products or not
-                const checked = affUser.productsForSale.includes(item._id);
-                let commission;
-                if (checked) {
-                    const onePercent = itemPrice / 100;
-                    commission = onePercent * affUser.commissionPercentage;
-                    affCommission += commission;
+                //affiliate
+                if (item.aff_id) {
+                    const affUser = await User.findById(aff_id);
+                    const affLevel = affUser.level;
+                    if (foundProduct.level <= affLevel) {
+                        const onePercent = itemPrice / 100;
+                        const commission =
+                            onePercent * affUser.commissionPercentage;
+                        affCommission += commission;
+                    }
                 }
                 return {
                     product: item.product,
@@ -89,4 +83,4 @@ const newOrder = async (req, res) => {
     }
 };
 
-module.exports = {newOrder}
+module.exports = { newOrder };
