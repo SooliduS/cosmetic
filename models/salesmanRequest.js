@@ -5,8 +5,22 @@ const salesmanRequestsSchema = new Schema(
     {
         user: { type: Schema.Types.ObjectId, ref: 'User' },
         confirmed: { type: Boolean, default: false },
-        message:{type:String , default:'منتظر بررسی توسط ادمین'},
-        adminUpdateDate: String
+        message: { type: String, default: 'منتظر بررسی توسط ادمین' },
+        melliCode: String,
+        email: String,
+        phoneNumber: String,
+        address: {
+            city: String,
+            postalCode: String,
+            details: String,
+            state: String,
+            phoneNumber: String,
+        },
+        mobileNumber: String,
+        melliCardImg: String,
+        bankCardNumber: String,
+        bankShabaNumber: String,
+        instagram: String,
     },
     { timestamps: true }
 );

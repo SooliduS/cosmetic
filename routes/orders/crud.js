@@ -27,7 +27,7 @@ const verifyAdmin = require('../../middlewares/verifyAdmin')
  *                     quantity:
  *                       type: number
  *                     salesmanNumber: 
- *                       type: string
+ *                       type: number
  *               address:
  *                 type: object
  *                 properties:
@@ -45,7 +45,7 @@ const verifyAdmin = require('../../middlewares/verifyAdmin')
  *               items:
  *                 - product: 5fec4fe20321b31e6cd99eaa
  *                   quantity: 2
- *                   affId: 3eec4fe20321b31e6cd99ebb
+ *                   salesmanNumber: 5126526
  *               address:
  *                 postalCode: 12345
  *                 detail: Example Street, 123

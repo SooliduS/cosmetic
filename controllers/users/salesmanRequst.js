@@ -35,16 +35,15 @@ const becomeSalesman = async (req, res) => {
 
         // update found user , make sure some not editable contant not beeng edited
 
-            foundUser.username= foundUser.username
-            foundUser.roles= foundUser.roles
-            foundUser.password= foundUser.password
-            foundUser.email= foundUser.email
-            foundUser.isEmailConfirmed= foundUser.isEmailConfirmed
-            foundUser.isMobileNumberConfirmed= foundUser.isMobileNumberConfirmed
-            foundUser.isMelliCardConfirmed= foundUser.isMelliCardConfirmed
-            foundUser.verified= foundUser.verified
-            foundUser.level= foundUser.level
-            foundUser.wallet= foundUser.wallet
+           foundUser.phoneNumber = phoneNumber
+           foundUser.melliCardImg = melliCardImg
+           foundUser.melliCode = melliCode
+           foundUser.bankCardNumber = bankCardNumber
+           foundUser.bankShabaNumber = bankShabaNumber
+           foundUser.instagram = instagram
+           foundUser.address = address
+           foundUser.mobileNumber = mobileNumber
+           foundUser.email = email
 
         const user = await foundUser.save();
 
