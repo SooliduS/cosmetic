@@ -49,7 +49,7 @@ const getUser = async (req, res) => {
                 .status(204)
                 .json({ message: `User ID ${req.params.id} not found` });
         }
-        res.json({...user , firstname:user.firstname , lastname:user.lastname});
+        res.json(user);
     } catch (e) {
         return res.status(500).json({ message: e.message });
     }

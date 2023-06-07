@@ -55,7 +55,7 @@ const handleSalesmanRequest = async (req, res) => {
 };
 
 const getSingleSalesmanRequest = async (req, res) => {
-    const requestId = req.params;
+    const {requestId} = req.params;
 
     if (!requestId)
         return res.status(400).json({ message: 'request id needed' });
@@ -70,7 +70,7 @@ const getSingleSalesmanRequest = async (req, res) => {
             return res.status(404).json({ message: 'user not found' });
 
         const obj = {
-            ...foundReq,
+            ...foundReq._doc,
             username: foundUser.username,
             firstname:foundUser.firstname,
             lastname: foundUser.lastname,

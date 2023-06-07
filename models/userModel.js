@@ -32,8 +32,8 @@ const userSchema = new Schema(
             unique: true,
         },
 		accountNumber : {type:Number , unique:true},
-        bankShabaNumber : {type:Number , unique:true},
-        bankCardNumber : {type:Number , unique:true},
+        bankShabaNumber : {type:String , unique:true},
+        bankCardNumber : {type:String , unique:true},
         isEmailConfirmed: {
             type: Boolean,
             required: true,
