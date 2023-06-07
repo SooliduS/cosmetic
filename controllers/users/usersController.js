@@ -77,7 +77,7 @@ const updateUser = async (req, res) => {
         if (duplicate)
             return res.status(409).json({ message: 'username used' });
 
-        if (username) foundUser.username = username;
+        if (username && username !== foundUser.username) foundUser.username = username;
         if (address) foundUser.address = address;
         if (instagram) foundUser.instagram = instagram;
         if (socialMedias) foundUser.socialMedias = socialMedias;

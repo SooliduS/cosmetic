@@ -23,13 +23,8 @@ const handleNewUser = async (req, res) => {
         return res
             .status(404)
             .json({ message: 'superior account number not found' });
-    if (foundSuperior.level < 6)
+    if (foundSuperior?.level && foundSuperior?.level < 6)
         return res.status(406).json({ message: 'superior under level 6' });
-
-    //create wallet
-    const wallet = await Wallet.create({
-        owner: req._id,
-    });
 
     try {
         //encrypt the password
@@ -46,10 +41,18 @@ const handleNewUser = async (req, res) => {
             password: hashedPwd,
             email,
             mobileNumber,
-            wallet,
             superior,
-            accountNumber
+            accountNumber,
         });
+
+        //create wallet
+        const wallet = await Wallet.create({
+            owner: result._id,
+        });
+
+        result.wallet = wallet._id
+
+        await result.save()
 
         //send validation email
         sendValidationEmail(result.email);

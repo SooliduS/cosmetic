@@ -62,6 +62,7 @@ const verifyPayment = async (req, res) => {
 
                         foundOrder.message = message || foundOrder.message; //change status of order
                         foundOrder.transaction = foundTransaction._id; //add id of transaction
+                        foundOrder.status = status
 
                         // supplier's wallet
                         let supplierWallet = await Wallet.findOne({

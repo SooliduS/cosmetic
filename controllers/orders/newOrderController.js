@@ -7,7 +7,7 @@ const newOrder = async (req, res) => {
     // items:array of products
     //address: {postalCode , detail , city , phoneNumber}
     //paymentMethod: enum:['idpay']
-    //aff_id: id of user
+    //affId: id of user
 
     if (!items.length || paymentMethod || address)
         return res.status(400).json({ message: 'required fields needed' });
@@ -28,7 +28,7 @@ const newOrder = async (req, res) => {
     try {
         //get price and add commission
         let totalPrice = 0;
-        let affCommission = 0;
+        let totalComission = 0
 
         const itemsArr = await Promise.all(
             items.map(async (item) => {
@@ -37,22 +37,25 @@ const newOrder = async (req, res) => {
                 totalPrice += itemPrice;
 
                 //affiliate
-                if (item.aff_id) {
-                    const affUser = await User.findById(aff_id);
+                if (item.affId) {
+                    const affUser = await User.findById(item.affId);
                     const affLevel = affUser.level;
                     if (foundProduct.level <= affLevel) {
                         const onePercent = itemPrice / 100;
-                        const commission =
-                            onePercent * affUser.commissionPercentage;
-                        affCommission += commission;
+                        const commission = onePercent * affUser.commissionPercentage;
+
+                            totalComission += commission // add commission to the total
+
+                        return {
+                            product: item.product,
+                            quantity: item.quantity,
+                            price: itemPrice,
+                            commission,
+                            affId:affUser._id,
+                            affPercent:affUser.commissionPercentage
+                        };
                     }
                 }
-                return {
-                    product: item.product,
-                    quantity: item.quantity,
-                    price: itemPrice,
-                    commission,
-                };
             })
         );
 
@@ -73,8 +76,7 @@ const newOrder = async (req, res) => {
             //shippingPrice, //has to develop
             totalPrice,
             payablePrice,
-            affId: affUser._id,
-            totalComission: affCommission,
+            totalComission
         });
 
         res.status(201).json(newOrder);

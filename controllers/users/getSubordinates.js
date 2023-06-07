@@ -2,8 +2,8 @@ const User = require('../../models/userModel');
 const filterUsers = require('../../lib/filterUsers');
 const {getPastMonthSalesSum ,getAllTimeSalesSum } = require('../../lib/getSalesmanDetails')
 
-const getAllSubordinates = async () => {
-    const { sort, filter } = filterUsers();
+const getAllSubordinates = async (req ,res) => {
+    const { sort, filter } = filterUsers(req);
     const { limit, offset } = req.params;
 
     try {
@@ -40,7 +40,7 @@ const getAllSubordinates = async () => {
             const subordinates = users.map(user => {
                 const pastMonthSalesSum = getPastMonthSalesSum(user._id)
                 const AllTimeSalesSum = getAllTimeSalesSum(user._id)
-                return {...user , pastMonthSalesSum , AllTimeSalesSum}
+                return {...user._doc , pastMonthSalesSum , AllTimeSalesSum}
             })
 
         res.status(200).json({subordinates , total});

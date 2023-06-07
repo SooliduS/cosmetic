@@ -292,43 +292,6 @@ router.put('/update' , updateUser)
  */
 router.put('/changepassword' , changePassword)
 
-/**
- * @swagger
- * /users/{id}:
- *   get:
- *     summary: Get user by ID (admin only)
- *     tags:
- *       - Admin
- *       - Users
- *     parameters:
- *       - name: id
- *         in: path
- *         description: User ID
- *         required: true
- *         schema:
- *           type: string
- *     responses:
- *       '200':
- *         description: The user information was successfully retrieved.
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/User'
- *       '204':
- *         description: The user with the provided ID was not found.
- *         content:
- *           application/json:
- *             example:
- *               message: User ID not found
- *       '400':
- *         description: User ID parameter is required.
- *         content:
- *           application/json:
- *             example:
- *               message: User ID required
- */
-router.get('/:id', verifyAdmin , getUser)//verifyAdmin
-
 //deleteuser
 // /**
 //  * @swagger
@@ -507,6 +470,43 @@ router.get('/getsalesmanrequest' , getSalesmanRequest)
  *         description: Internal server error
  */
 router.get('/subordinates' , getAllSubordinates)
+
+/**
+ * @swagger
+ * /users/single/{id}:
+ *   get:
+ *     summary: Get user by ID (admin only)
+ *     tags:
+ *       - Admin
+ *       - Users
+ *     parameters:
+ *       - name: id
+ *         in: path
+ *         description: User ID
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       '200':
+ *         description: The user information was successfully retrieved.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/User'
+ *       '204':
+ *         description: The user with the provided ID was not found.
+ *         content:
+ *           application/json:
+ *             example:
+ *               message: User ID not found
+ *       '400':
+ *         description: User ID parameter is required.
+ *         content:
+ *           application/json:
+ *             example:
+ *               message: User ID required
+ */
+router.get('/single/:id', verifyAdmin , getUser)//verifyAdmin
 
 
 

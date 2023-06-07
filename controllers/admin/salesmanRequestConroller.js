@@ -2,10 +2,7 @@ const SalesmanRequest = require('../../models/salesmanRequest');
 const User = require('../../models/userModel');
 
 const getSalesmanRequests = async (req, res) => {
-    if (req.roles !== 'Admin' && req.roles !== 'Editor')
-        return res
-            .status(403)
-            .json({ message: 'only admin and editor have permission' });
+   
     try {
         const total = await SalesmanRequest.countDocuments({
             confirmed: false,

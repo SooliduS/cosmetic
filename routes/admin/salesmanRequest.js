@@ -1,5 +1,9 @@
-const router = require('express').Router()
-const {getSalesmanRequests , handleSalesmanRequest} = require('../../controllers/admin/salesmanRequestConroller')
+const router = require('express').Router();
+const {
+    getSalesmanRequests,
+    handleSalesmanRequest,
+} = require('../../controllers/admin/salesmanRequestConroller');
+const verifyAdmin = require('../../middlewares/verifyAdmin');
 
 /**
  * @swagger
@@ -37,7 +41,7 @@ const {getSalesmanRequests , handleSalesmanRequest} = require('../../controllers
  *       updatedAt:
  *         type: string
  */
-router.get('/' , getSalesmanRequests)
+router.get('/', verifyAdmin, getSalesmanRequests);
 
 /**
  * @swagger
@@ -113,6 +117,6 @@ router.get('/' , getSalesmanRequests)
  *       updatedAt:
  *         type: string
  */
-router.post('/handle' , handleSalesmanRequest)
+router.post('/handle', verifyAdmin, handleSalesmanRequest);
 
-module.exports = router
+module.exports = router;

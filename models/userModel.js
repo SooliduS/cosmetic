@@ -64,7 +64,6 @@ const userSchema = new Schema(
 		active:{type:Boolean , default:true },
 		instagram:String,
         socialMedias:{
-            instagram:String,
             telegram:String,
             website:String,
             twitter:String,

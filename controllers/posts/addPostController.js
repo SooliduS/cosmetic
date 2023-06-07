@@ -14,10 +14,11 @@ const addPost = async (req, res) => {
             content,
             tags,
             keyWords,
+            authorId:req._id
         });
 
         res.status(201).json(post);
-    } catch (err) {
+    } catch (e) {
         res.status(500).json({ message: e.message });
     }
 };

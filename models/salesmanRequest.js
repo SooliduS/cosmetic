@@ -6,7 +6,7 @@ const salesmanRequestsSchema = new Schema(
         user: { type: Schema.Types.ObjectId, ref: 'User' },
         confirmed: { type: Boolean, default: false },
         message:{type:String , default:'منتظر بررسی توسط ادمین'},
-        adminUpdateDate: Date
+        adminUpdateDate: String
     },
     { timestamps: true }
 );

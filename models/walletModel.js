@@ -10,6 +10,17 @@ const walletSchema = new Schema(
         },
         isActive: { type: Boolean, default: true },
         stock: { type: Number, required: true, default: 0 },
+        transactions:[
+            {
+                order:{type:Schema.Types.ObjectId , ref:'Order'},
+                transactionType:{
+                    type:String,
+                    enum:['deposit','withdraw','commission','returned']
+                },
+                createdAt:Date,
+                amount:Number
+            }
+        ]
     },
     { timestamps: true }
 );

@@ -25,6 +25,8 @@ const {getOrders} = require('../../controllers/orders/getOrdersController')
  *                       type: string
  *                     quantity:
  *                       type: number
+ *                     affId: 
+ *                       type: string
  *               address:
  *                 type: object
  *                 properties:
@@ -38,19 +40,17 @@ const {getOrders} = require('../../controllers/orders/getOrdersController')
  *                     type: string
  *               paymentMethod:
  *                 type: string
- *               aff_id:
- *                 type: string
  *             example:
  *               items:
  *                 - product: 5fec4fe20321b31e6cd99eaa
  *                   quantity: 2
+ *                   affId: 3eec4fe20321b31e6cd99ebb
  *               address:
  *                 postalCode: 12345
  *                 detail: Example Street, 123
  *                 city: Example City
  *                 phoneNumber: 9876543210
  *               paymentMethod: idpay
- *               aff_id: 5fec4fe20321b31e6cd99ebb
  *     responses:
  *       '201':
  *         description: New order created

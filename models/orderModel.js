@@ -18,7 +18,9 @@ const orderSchema = new Schema(
                 },
                 quantity: { type: Number, required: true },
                 price: { type: Number, required: true },
-				commission:Number
+				commission:Number,
+				affId:{type:Schema.Types.ObjectId , ref:'User'},
+				affPercent:Number
             },
         ],
         shippingAddress: {
@@ -61,8 +63,6 @@ const orderSchema = new Schema(
             default: 0,
             //totalPrice + shipping + tax + ...
         },
-        aff_id: { type: Schema.Types.ObjectId, ref: 'User' },
-        aff_percent: Number,
         seen: { type: Boolean, default: false },
 
     },
