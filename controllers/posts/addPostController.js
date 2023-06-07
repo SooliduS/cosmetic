@@ -1,7 +1,7 @@
 const Post = require('../../models/postModel');
 
 const addPost = async (req, res) => {
-    const { title, content, tags, keyWords } = req.body;
+    const { title, content, tags, keyWords , level } = req.body;
 
     if (!title || !content)
         return res
@@ -14,6 +14,7 @@ const addPost = async (req, res) => {
             content,
             tags,
             keyWords,
+            level,
             authorId:req._id
         });
 

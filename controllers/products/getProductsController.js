@@ -131,6 +131,10 @@ const getProduct = async (req, res) => {
     }
 };
 
+// const getListOfProducts = async( req ,res) => {
+//     if()
+// }
+
 module.exports = {
     getAllProducts,
     getAmazingOfferProducts,

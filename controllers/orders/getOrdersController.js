@@ -3,9 +3,6 @@ const filterOrders = require('../../lib/filterOrders');
 
 const getOrders = async (req, res) => {
 
-    if (!req.roles.includes('Admin') || !req.roles.includes('Editor'))
-        return res.status(403).json({ message: 'admin route' });
-
     const { offset, limit } = req.query;
     const { sort, filter } = filterOrders(req);
 
@@ -21,5 +18,10 @@ const getOrders = async (req, res) => {
         return res.status(500).json({ message: e.message });
     }
 };
+
+const getOrdersByUser = async(req ,res) => {
+    const {offset , limit} = req.query
+    const {sort , filter} = filterOrders(req)
+}
 
 module.exports = {getOrders}

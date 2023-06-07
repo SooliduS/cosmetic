@@ -1,6 +1,7 @@
 const router = require('express').Router()
 const {newOrder} = require('../../controllers/orders/newOrderController')
 const {getOrders} = require('../../controllers/orders/getOrdersController')
+const verifyAdmin = require('../../middlewares/verifyAdmin')
 
 /**
  * @swagger
@@ -25,7 +26,7 @@ const {getOrders} = require('../../controllers/orders/getOrdersController')
  *                       type: string
  *                     quantity:
  *                       type: number
- *                     affId: 
+ *                     salesmanNumber: 
  *                       type: string
  *               address:
  *                 type: object
@@ -68,6 +69,40 @@ const {getOrders} = require('../../controllers/orders/getOrdersController')
  *         description: Internal server error
  */
 router.post('/create' , newOrder)
-router.get('/all', getOrders) // admin only
+
+/**
+ * @swagger
+ * /order/all:
+ *   get:
+ *     summary: Get a single product by ID
+ *     tags:
+ *       - getOrders
+ *     description: Get all orders by admin
+ *     parameters:
+ *       - name: limit
+ *         in: query
+ *         schema:
+ *           type: String
+ *       - name: offset
+ *         in: query
+ *         schema:
+ *           type: String
+ *     produces:
+ *       - application/json
+ *     responses:
+ *       200:
+ *         description: The product object
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Order'
+ *       404:
+ *         description: Order not found
+ *       500:
+ *         description: Internal server error
+ */
+router.get('/all', verifyAdmin, getOrders) // admin only
+
+
 
 module.exports = router

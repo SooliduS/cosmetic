@@ -35,6 +35,9 @@ const {addPost} = require('../../controllers/posts/addPostController')
  *                 items:
  *                   type: string
  *                 description: The keywords associated with the post.
+ *               level:
+ *                 type: number
+ *                 description: level of post that can be visible by salesman
  *             example:
  *               title: New Post
  *               content: This is a new post.
@@ -44,6 +47,7 @@ const {addPost} = require('../../controllers/posts/addPostController')
  *               keyWords:
  *                 - keyword1
  *                 - keyword2
+ *               level: 0
  *     responses:
  *       '201':
  *         description: The post was created successfully.

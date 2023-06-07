@@ -413,7 +413,7 @@ router.post('/salesmanrequest' , becomeSalesman)
 
 /**
  * @swagger
- * /users/getsalesmanrequst:
+ * /users/getsalesmanrequest:
  *   get:
  *     summary: Get the request info 
  *     tags:

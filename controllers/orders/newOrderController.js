@@ -33,14 +33,15 @@ const newOrder = async (req, res) => {
         const itemsArr = await Promise.all(
             items.map(async (item) => {
                 const foundProduct = await Product.findById(item.Product);
+                if(!foundProduct) return res.status(404).json({message:'product not found'})
                 const itemPrice = foundProduct.price * item.quantity;
                 totalPrice += itemPrice;
 
                 //affiliate
                 if (item.affId) {
-                    const affUser = await User.findById(item.affId);
-                    const affLevel = affUser.level;
-                    if (foundProduct.level <= affLevel) {
+                    const affUser = await User.findOne({accountNumber:item.salesmanNumber});
+                    const affLevel = affUser?.level;
+                    if (affUser && foundProduct.level <= affLevel) {
                         const onePercent = itemPrice / 100;
                         const commission = onePercent * affUser.commissionPercentage;
 

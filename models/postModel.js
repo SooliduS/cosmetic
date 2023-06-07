@@ -9,16 +9,17 @@ const postSchema = new Schema({
         ref: 'User',
         required: true,
     },
-    comments: {
+    comments: [{
         type: Schema.Types.ObjectId,
         ref: 'Comment',
-    },
+    }],
     views: {
         type: Number,
         default: 0,
     },
     tags: [String],
     keyWords:[String],
+    level:Number
 });
 
 module.exports = mongoose.model('Post', postSchema);

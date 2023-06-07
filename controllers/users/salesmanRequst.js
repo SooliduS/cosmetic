@@ -34,20 +34,18 @@ const becomeSalesman = async (req, res) => {
         if(!foundUser) return res.status(400).josn({message:'user not found'})
 
         // update found user , make sure some not editable contant not beeng edited
-        foundUser = {
-            ...req.body,
-            username: foundUser.username,
-            roles: foundUser.roles,
-            password: foundUser.password,
-            email: foundUser.email,
-            isEmailConfirmed: foundUser.isEmailConfirmed,
-            isMobileNumberConfirmed: foundUser.isMobileNumberConfirmed,
-            isMelliCardConfirmed: foundUser.isMelliCardConfirmed,
-            verified: foundUser.verified,
-            level: foundUser.level,
-            productsForSale: foundUser.productsForSale,
-            wallet: foundUser.wallet,
-        };
+
+            foundUser.username= foundUser.username
+            foundUser.roles= foundUser.roles
+            foundUser.password= foundUser.password
+            foundUser.email= foundUser.email
+            foundUser.isEmailConfirmed= foundUser.isEmailConfirmed
+            foundUser.isMobileNumberConfirmed= foundUser.isMobileNumberConfirmed
+            foundUser.isMelliCardConfirmed= foundUser.isMelliCardConfirmed
+            foundUser.verified= foundUser.verified
+            foundUser.level= foundUser.level
+            foundUser.wallet= foundUser.wallet
+
         const user = await foundUser.save();
 
         const newSalesmanRequest = await SalesmanRequest.create({
@@ -57,8 +55,7 @@ const becomeSalesman = async (req, res) => {
         return res
             .status(200)
             .json({
-                message: `user ${foundUser.username} updated successfully`,
-                user,
+                newSalesmanRequest
             });
     } catch (e) {
         return res.status(500).json({ message: e.message });
@@ -68,6 +65,8 @@ const becomeSalesman = async (req, res) => {
 const getSalesmanRequest = async(req , res) => {
     try{
         const request = await SalesmanRequest.findOne({user:req._id})
+
+        if( !request ) return res.sendStatus(404)
 
         console.log(request);
         res.status(200).json(request)
