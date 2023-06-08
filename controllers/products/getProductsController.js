@@ -1,5 +1,6 @@
 const Product = require('../../models/productModel');
 const filterProducts = require('../../lib/filterProducts');
+const User = require('../../models/userModel');
 
 const getAllProducts = async (req, res) => {
     let { offset, limit } = req.query;
@@ -149,11 +150,31 @@ const getListOfProducts = async (req, res) => {
     }
 };
 
+const getSalesmanProducts = async (req, res) => {
+    let { offset, limit } = req.query;
+    const params = filterProducts(req);
+
+    try {
+        const foundUser = await User.findById(req._id);
+
+        const products = await Product.find({
+            level: { $lte: foundUser.level },
+            ...params.filter,
+        })
+            .skip(Number(offset))
+            .limit(Number(limit));
+
+        res.status(200).json(products);
+    } catch (e) {
+        return res.status(500).json({ message: e.message });
+    }
+};
 module.exports = {
     getAllProducts,
     getAmazingOfferProducts,
     getNewestProducts,
     getMostSalesProducts,
     getProduct,
-    getListOfProducts
+    getListOfProducts,
+    getSalesmanProducts
 };

@@ -5,7 +5,10 @@ const {
     getMostSalesProducts,
     getNewestProducts,
     getProduct,
+    getListOfProducts,
+    getSalesmanProducts
 } = require('../../controllers/products/getProductsController');
+const verifyJWT = require('../../middlewares/verifyJWT')
 
 /**
  * @swagger
@@ -340,7 +343,76 @@ router.get('/single/:slug', getProduct);
  *         updatedAt:
  *           type: string
  */
+router.get('/list/:ids' , getListOfProducts)
 
-router.get('/list/:ids' , )
+/**
+ * @swagger
+ * /getproducts/tosale:
+ *   get:
+ *     summary: Get products for salesman to sale
+ *     tags:
+ *       - getProducts
+ *     description: Get products for salesman to sale
+ *     parameters:
+ *       - name: colors
+ *         description: list of color names of the products splited by "-"
+ *         in: query
+ *         example: آبی-سفید-صورتی
+ *         schema:
+ *           type: string
+ *       - name: brands
+ *         description: list of Brands of the products splited by "-"
+ *         in: query
+ *         example: oreal-nike-golrang
+ *         schema:
+ *           type: string
+ *       - name: price
+ *         description: Price range of the product
+ *         in: query
+ *         schema:
+ *           type: string
+ *         example: 100000-200000
+ *       - name: sort
+ *         description: how to sort
+ *         in: query
+ *         schema:
+ *           type: string
+ *           enum: [mostSales , mostViews , mostExpensive , cheapest , newest]
+ *       - name: offset
+ *         description: the number of the starting item
+ *         in: query
+ *         schema:
+ *           type: integer
+ *       - name: limit
+ *         description: number of items to send
+ *         in: query
+ *         schema:
+ *           type: integer
+ *       - name: categories
+ *         description: list of ids of categories that need to search for (for subcategories just send a subcategory id alone) splited by "-"
+ *         in: query
+ *         schema: 
+ *           type: string
+ *           example: 645e325ba7c9a32759c2083a-645e325ba7c9a32759c2083a-645e325ba7c9a32759c2083a
+ *       - name: searchName
+ *         description: the search word that the products name include
+ *         in: query
+ *         type: string
+ *         example: شامپو
+ *     produces:
+ *       - application/json
+ *     responses:
+ *       200:
+ *         description: to sale products
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Product'
+ *       500:
+ *         description: Internal server error
+ */
+router.get('/tosale' , verifyJWT ,  getSalesmanProducts)
 
 module.exports = router;

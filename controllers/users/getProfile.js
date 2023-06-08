@@ -31,7 +31,6 @@ const getProfile = async (req, res) => {
             socialMedias,
             level,
             superior,
-            productsForSale,
             commissionPercentage,
             wallet
         } = profile;
@@ -56,7 +55,6 @@ const getProfile = async (req, res) => {
             socialMedias,
             level,
             superior,
-            productsForSale,
             commissionPercentage,
             wallet,
         });

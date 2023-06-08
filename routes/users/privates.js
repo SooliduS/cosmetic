@@ -3,6 +3,7 @@ const { getAllUsers , getUser , updateUser , changePassword , deleteUser} = requ
 const {becomeSalesman, getSalesmanRequest} = require ('../../controllers/users/salesmanRequst')
 const {getProfile} = require('../../controllers/users/getProfile')
 const {getAllSubordinates} = require('../../controllers/users/getSubordinates')
+const {getSalesmanDetails} = require('../../controllers/users/getSalesmanDetails')
 
 const verifyAdmin = require('../../middlewares/verifyAdmin')
 
@@ -470,6 +471,21 @@ router.get('/getsalesmanrequest' , getSalesmanRequest)
  *         description: Internal server error
  */
 router.get('/subordinates' , getAllSubordinates)
+
+/**
+ * @swagger
+ * /users/salesmandetails:
+ *   get:
+ *     summary: Get details of sales and commissions for salesman
+ *     tags:
+ *       - Users
+ *     responses:
+ *       '200':
+ *         description: details of sales and commissions for salesman
+ *       '500':
+ *         description: Internal server error
+ */
+router.get('/salesmandetails' , getSalesmanDetails)
 
 /**
  * @swagger

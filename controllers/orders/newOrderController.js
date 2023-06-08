@@ -9,7 +9,7 @@ const newOrder = async (req, res) => {
     //paymentMethod: enum:['idpay']
     //affId: id of user
 
-    if (!items.length || paymentMethod || address)
+    if (!items.length || !paymentMethod || !address)
         return res.status(400).json({ message: 'required fields needed' });
     if (!address.phoneNumber)
         return res
@@ -28,35 +28,46 @@ const newOrder = async (req, res) => {
     try {
         //get price and add commission
         let totalPrice = 0;
-        let totalComission = 0
+        let totalComission = 0;
 
-        const itemsArr = await Promise.all(
+        const itemsArr = [];
+        await Promise.all(
             items.map(async (item) => {
-                const foundProduct = await Product.findById(item.Product);
-                if(!foundProduct) return res.status(404).json({message:'product not found'})
+                const foundProduct = await Product.findById(item.product);
+                if (!foundProduct) throw new Error('item not found');
                 const itemPrice = foundProduct.price * item.quantity;
                 totalPrice += itemPrice;
 
                 //affiliate
-                if (item.affId) {
-                    const affUser = await User.findOne({accountNumber:item.salesmanNumber});
+                if (item.salesmanNumber) {
+                    console.log(item.salesmanNumber);
+                    const affUser = await User.findOne({
+                        accountNumber: item.salesmanNumber,
+                    });
                     const affLevel = affUser?.level;
-                    if (affUser && foundProduct.level <= affLevel) {
+                    if (affUser && (foundProduct.level <= affLevel || !foundProduct.level) ) {
                         const onePercent = itemPrice / 100;
-                        const commission = onePercent * affUser.commissionPercentage;
+                        const commission =
+                            onePercent * affUser.commissionPercentage;
 
-                            totalComission += commission // add commission to the total
+                        totalComission += commission; // add commission to the total
 
-                        return {
+                        return itemsArr.push({
                             product: item.product,
                             quantity: item.quantity,
                             price: itemPrice,
                             commission,
-                            affId:affUser._id,
-                            affPercent:affUser.commissionPercentage
-                        };
+                            affId: affUser._id,
+                            affPercent: affUser.commissionPercentage,
+                        });
                     }
                 }
+                return itemsArr.push({
+                    product: item.product,
+                    quantity: item.quantity,
+                    price: itemPrice,
+                    
+                });
             })
         );
 
@@ -77,11 +88,13 @@ const newOrder = async (req, res) => {
             //shippingPrice, //has to develop
             totalPrice,
             payablePrice,
-            totalComission
+            totalComission,
         });
 
         res.status(201).json(newOrder);
     } catch (e) {
+        if (e.message == 'item not found')
+            return res.status(404).json({ message: e.message });
         res.status(500).json({ message: e.message });
     }
 };

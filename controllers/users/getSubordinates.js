@@ -1,6 +1,6 @@
 const User = require('../../models/userModel');
 const filterUsers = require('../../lib/filterUsers');
-const {getPastMonthSalesSum ,getAllTimeSalesSum } = require('../../lib/getSalesmanDetails')
+const {getPastMonthSalesSum ,getAllTimeSalesSum ,getLastMonthSalesSum } = require('../../lib/getSalesmanDetails')
 
 const getAllSubordinates = async (req ,res) => {
     const { sort, filter } = filterUsers(req);
@@ -37,11 +37,12 @@ const getAllSubordinates = async (req ,res) => {
             .skip(Number(offset))
             .limit(Number(limit));
 
-            const subordinates = users.map(user => {
-                const pastMonthSalesSum = getPastMonthSalesSum(user._id)
-                const AllTimeSalesSum = getAllTimeSalesSum(user._id)
-                return {...user._doc , pastMonthSalesSum , AllTimeSalesSum}
-            })
+            const subordinates =await Promise.all(users.map(async user => {
+                const pastMonthSalesSum = await getPastMonthSalesSum(user._id)
+                const allTimeSalesSum = await getAllTimeSalesSum(user._id)
+                const lastMonthSalesSum = await getLastMonthSalesSum(user._id)
+                return {...user._doc , pastMonthSalesSum , allTimeSalesSum , lastMonthSalesSum}
+            }))
 
         res.status(200).json({subordinates , total});
     } catch (e) {
