@@ -131,9 +131,23 @@ const getProduct = async (req, res) => {
     }
 };
 
-// const getListOfProducts = async( req ,res) => {
-//     if()
-// }
+const getListOfProducts = async (req, res) => {
+    const products = req.params.ids.split('-');
+
+    try {
+        const total = products.length;
+        const foundProducts = await Promise.all(
+            products.map(async (id) => {
+                const foundProduct = await Product.findById(id);
+                return foundProduct;
+            })
+        );
+
+        return res.status(200).json({ products: foundProducts, total });
+    } catch (e) {
+        return res.status(500).json({ message: e.message });
+    }
+};
 
 module.exports = {
     getAllProducts,
@@ -141,4 +155,5 @@ module.exports = {
     getNewestProducts,
     getMostSalesProducts,
     getProduct,
+    getListOfProducts
 };

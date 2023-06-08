@@ -279,4 +279,68 @@ router.get('/newest', getNewestProducts);
  */
 router.get('/single/:slug', getProduct);
 
+/**
+ * @swagger
+ * /getproducts/list/{ids}:
+ *   get:
+ *     summary: Get a list of products by IDs
+ *     tags:
+ *       - getProducts
+ *     parameters:
+ *       - in: path
+ *         name: ids
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: IDs of the products (dash-separated)
+ *         example: lhiwufhowuefwhef0-ijsfohoufhweufwf-oiwofwneofwnwf
+ *     responses:
+ *       '200':
+ *         description: Successful operation
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ProductListResponse'
+ *       '500':
+ *         description: Internal server error
+ *         content:
+ *           application/json:
+ *             example:
+ *               message: An error occurred while retrieving the products.
+ *
+ * components:
+ *   schemas:
+ *     ProductListResponse:
+ *       type: object
+ *       properties:
+ *         products:
+ *           type: array
+ *           items:
+ *             $ref: '#/components/schemas/Product'
+ *         total:
+ *           type: number
+ *
+ *     Product:
+ *       type: object
+ *       properties:
+ *         _id:
+ *           type: string
+ *         name:
+ *           type: string
+ *         description:
+ *           type: string
+ *         price:
+ *           type: number
+ *         category:
+ *           type: string
+ *         brand:
+ *           type: string
+ *         createdAt:
+ *           type: string
+ *         updatedAt:
+ *           type: string
+ */
+
+router.get('/list/:ids' , )
+
 module.exports = router;
