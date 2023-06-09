@@ -6,7 +6,7 @@ const verifyAdmin = require('../../middlewares/verifyAdmin')
  * @swagger
  * /getposts/all:
  *   get:
- *     summary: get all posts
+ *     summary: get all posts (admin only)
  *     tags: [getPosts]    
  *     parameters:
  *       - name: limit
@@ -33,7 +33,7 @@ router.get('/all' , verifyAdmin , getAllPosts)
 
 /**
  * @swagger
- * /getposts/all:
+ * /getposts/salesman:
  *   get:
  *     summary: get posts that are accessable to salesman
  *     tags: [getPosts]    

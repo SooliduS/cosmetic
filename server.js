@@ -49,7 +49,6 @@ app.use('/register' , require('./routes/users/register'))
 app.use('/login' , require('./routes/users/auth'))
 app.use('/refresh' , require('./routes/users/refresh'))
 app.use('/getproducts' , require('./routes/products/getProducts'))
-app.use('/getposts' , require('./routes/posts/getPosts'))
 app.use('/getcategories' , require('./routes/categories/getCategories'))
 app.use('/getfilters' , require('./routes/filters/getFilters'))
 // app.use('/emailconfirmation' , )
@@ -57,6 +56,7 @@ app.use('/getfilters' , require('./routes/filters/getFilters'))
 
 //private routes
 app.use(verifyJWT)//↓
+app.use('/getposts' , require('./routes/posts/getPosts'))
 app.use('/logout' , require('./routes/users/logout'))
 app.use('/order' , require('./routes/orders/crud'))
 app.use('/users',require('./routes/users/privates'))
@@ -66,6 +66,7 @@ app.use('/post' , require('./routes/posts/crud'))
 app.use(verifyAdmin)//↓
 app.use('/admin/salesmanrequests' , require('./routes/admin/salesmanRequest')) 
 app.use('/product' , require('./routes/products/crud'))//all products crud controller
+app.use('/resetusers' , require('./routes/admin/resetUsers'))
 
 //handle errors
 app.use(errorHandler);

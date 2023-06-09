@@ -1,6 +1,7 @@
 const router = require('express').Router()
 const {newOrder} = require('../../controllers/orders/newOrderController')
-const {getOrders} = require('../../controllers/orders/getOrdersController')
+const {getOrders , getOrdersByUser , getSingleOrder} = require('../../controllers/orders/getOrdersController')
+const {changeOrderStatus} = require('../../controllers/orders/changeOrderStatusController')
 const verifyAdmin = require('../../middlewares/verifyAdmin')
 
 /**
@@ -72,12 +73,12 @@ router.post('/create' , newOrder)
 
 /**
  * @swagger
- * /order/all:
+ * /order/user:
  *   get:
- *     summary: Get a single product by ID
+ *     summary: Get all orders by user
  *     tags:
- *       - getOrders
- *     description: Get all orders by admin
+ *       - Order
+ *     description: get orders by user
  *     parameters:
  *       - name: limit
  *         in: query
@@ -91,7 +92,7 @@ router.post('/create' , newOrder)
  *       - application/json
  *     responses:
  *       200:
- *         description: The product object
+ *         description: orders
  *         content:
  *           application/json:
  *             schema:
@@ -101,7 +102,220 @@ router.post('/create' , newOrder)
  *       500:
  *         description: Internal server error
  */
+router.get('/user' , getOrdersByUser)
+
+/**
+ * @swagger
+ * /order/user/{id}:
+ *   get:
+ *     summary: Get all orders of a user (admin only)
+ *     tags:
+ *       - Order
+ *     description: Get all orders of a user by admin
+ *     parameters:
+ *       - name: id
+ *         in: path
+ *         schema: 
+ *           type: string
+ *       - name: limit
+ *         in: query
+ *         schema:
+ *           type: String
+ *       - name: offset
+ *         in: query
+ *         schema:
+ *           type: String
+ *     produces:
+ *       - application/json
+ *     responses:
+ *       200:
+ *         description: orders
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Order'
+ *       404:
+ *         description: Order not found
+ *       500:
+ *         description: Internal server error
+ */
+router.get('/user/:id' , getOrdersByUser)
+
+/**
+ * @swagger
+ * /order/all:
+ *   get:
+ *     summary: Get orders
+ *     tags:
+ *       - Order
+ *     parameters:
+ *       - in: query
+ *         name: offset
+ *         schema:
+ *           type: integer
+ *         description: Number of records to skip
+ *       - in: query
+ *         name: limit
+ *         schema:
+ *           type: integer
+ *         description: Maximum number of records to return
+ *       - in: query
+ *         name: status
+ *         schema:
+ *           type: string
+ *         description: Order status to filter by
+ *       - in: query
+ *         name: product
+ *         schema:
+ *           type: string
+ *         description: Product ID to filter by
+ *       - in: query
+ *         name: sort
+ *         schema:
+ *           type: string
+ *         description: Sort order for the results
+ *       - in: query
+ *         name: category
+ *         schema:
+ *           type: string
+ *         description: Category to filter by
+ *       - in: query
+ *         name: seen
+ *         schema:
+ *           type: boolean
+ *         description: Order seen status to filter by
+ *     responses:
+ *       '200':
+ *         description: Successful operation
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/definitions/OrderResponse'
+ *       '500':
+ *         description: Internal server error
+ *
+ * definitions:
+ *   OrderResponse:
+ *     type: object
+ *     properties:
+ *       orders:
+ *         type: array
+ *         items:
+ *           $ref: '#/definitions/Order'
+ *       total:
+ *         type: integer
+ *
+ *   Order:
+ *     type: object
+ *     properties:
+ *       // Define properties of an order here
+ */
 router.get('/all', verifyAdmin, getOrders) // admin only
+
+/**
+ * @swagger
+ * /order/single/{orderId}:
+ *   get:
+ *     summary: Get a single order by ID
+ *     tags:
+ *       - Order
+ *     parameters:
+ *       - in: path
+ *         name: orderId
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: ID of the order
+ *     responses:
+ *       '200':
+ *         description: Successful operation
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Order'
+ *       '400':
+ *         description: Invalid request parameters
+ *         content:
+ *           application/json:
+ *             example:
+ *               message: Order ID is required.
+ *       '403':
+ *         description: Forbidden - Only authorized users can access the order
+ *       '404':
+ *         description: Order not found
+ *         content:
+ *           application/json:
+ *             example:
+ *               message: Order not found.
+ *
+ * components:
+ *   schemas:
+ *     Order:
+ *       type: object
+ *       properties:
+ *         _id:
+ *           type: string
+ *         buyer:
+ *           type: string
+ *         items:
+ *           type: array
+ *           items:
+ *             $ref: '#/components/schemas/OrderItem'
+ *         totalAmount:
+ *           type: number
+ *         createdAt:
+ *           type: string
+ *         updatedAt:
+ *           type: string
+ *
+ *     OrderItem:
+ *       type: object
+ *       properties:
+ *         product:
+ *           type: string
+ *         quantity:
+ *           type: number
+ *         price:
+ *           type: number
+ */
+router.get('/single/:orderId' , getSingleOrder)
+
+/**
+ * @swagger
+ * /order/changeStatus:
+ *   patch:
+ *     summary: Change order status (admin only)
+ *     tags:
+ *       - Order
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/ChangeOrderStatusInput'
+ *     responses:
+ *       '200':
+ *         description: Successful operation
+ *       '400':
+ *         description: Invalid request parameters
+ *         content:
+ *           application/json:
+ *             example:
+ *               message: Order ID is required.
+ *       '500':
+ *         description: Internal server error
+ *
+ * components:
+ *   schemas:
+ *     ChangeOrderStatusInput:
+ *       type: object
+ *       properties:
+ *         orderId:
+ *           type: string
+ *         status:
+ *           type: number
+ */
+router.post('/changestatus', verifyAdmin ,changeOrderStatus )
 
 
 

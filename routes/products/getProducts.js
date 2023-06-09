@@ -347,7 +347,7 @@ router.get('/list/:ids' , getListOfProducts)
 
 /**
  * @swagger
- * /getproducts/tosale:
+ * /getproducts/salesman:
  *   get:
  *     summary: Get products for salesman to sale
  *     tags:
@@ -413,6 +413,6 @@ router.get('/list/:ids' , getListOfProducts)
  *       500:
  *         description: Internal server error
  */
-router.get('/tosale' , verifyJWT ,  getSalesmanProducts)
+router.get('/salesman' , verifyJWT ,  getSalesmanProducts)
 
 module.exports = router;
