@@ -299,9 +299,9 @@ router.post('/add', addProduct);
 /**
  * @swagger
  * /product/amazingoffers: 
- *   tags:
- *     - Product
  *   post:
+ *     tags:
+ *       - Product
  *     summary: Add products to the amazing offer list
  *     requestBody:
  *       required: true
