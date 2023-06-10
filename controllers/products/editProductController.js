@@ -14,7 +14,6 @@ const editProduct = async (req, res) => {
             'slug',
             'category',
             'price',
-            'isAmazingOffer',
             'discount',
             'isSuggested',
             'brand',
@@ -25,6 +24,8 @@ const editProduct = async (req, res) => {
             'details',
             'description',
             'inventory',
+            'englishNmae',
+            'brief'
         ];
 
         Object.keys

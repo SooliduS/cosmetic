@@ -32,7 +32,8 @@ const getProfile = async (req, res) => {
             level,
             superior,
             commissionPercentage,
-            wallet
+            wallet,
+            accountNumber
         } = profile;
 
         res.status(200).json({
@@ -57,6 +58,7 @@ const getProfile = async (req, res) => {
             superior,
             commissionPercentage,
             wallet,
+            accountNumber
         });
     } catch (e) {
         return res.status(500).json({ message: e.message });

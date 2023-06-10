@@ -21,6 +21,7 @@ const salesmanRequestsSchema = new Schema(
         bankCardNumber: String,
         bankShabaNumber: String,
         instagram: String,
+        seen:Boolean,
     },
     { timestamps: true }
 );

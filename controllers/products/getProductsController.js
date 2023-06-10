@@ -63,8 +63,6 @@ const getAmazingOfferProducts = async (req, res) => {
     try {
         const products = await Product.find({
             isAmazingOffer: true,
-            discount: { $gte: 1 },
-            ...params.filter,
         })
             .sort(params.sort)
             .skip(offset)
@@ -169,6 +167,31 @@ const getSalesmanProducts = async (req, res) => {
         return res.status(500).json({ message: e.message });
     }
 };
+
+const getSimilarProducts = async (req, res) => {
+    let { offset, limit } = req.query;
+    const params = filterProducts(req);
+    const { slug } = req.params;
+
+    try {
+        const foundProduct = await Product.findOne({ slug });
+        if (!foundProduct)
+            return res.status(404).json({ message: 'product not found' });
+        if (!foundProduct.tags) return res.status(204).json([]);
+        const products = await Product.find({
+            tags: { $in: foundProduct.tags },
+            _id: { $ne: foundProduct._id },
+            ...params.filter,
+        })
+            .skip(Number(offset))
+            .limit(Number(limit));
+
+        res.status(200).json(products);
+    } catch (e) {
+        return res.status(500).json({ message: e.message });
+    }
+};
+
 module.exports = {
     getAllProducts,
     getAmazingOfferProducts,
@@ -176,5 +199,6 @@ module.exports = {
     getMostSalesProducts,
     getProduct,
     getListOfProducts,
-    getSalesmanProducts
+    getSalesmanProducts,
+    getSimilarProducts,
 };

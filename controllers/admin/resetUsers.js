@@ -9,6 +9,7 @@ const resetUsers = async(req ,res)=> {
         let count = 0
         await Promise.all(allSalesmen.map( async user => {
             count += 1
+            console.log(`${count} of ${total} has been checked`);
             if(user.level === 1) {
                 const lastMonthSalesSum = getLastMonthSalesSum(user._id)
                 if(lastMonthSalesSum >= 3000000) user.level = 2
@@ -32,35 +33,35 @@ const resetUsers = async(req ,res)=> {
             if(user.level === 6) {
                 const lastMonthSalesSum = getLastMonthSalesSum(user._id)
                 if(lastMonthSalesSum >= 100000000) {
-                    const subordinatesCount = await User.countDocuments({level:{$gte:3}})
+                    const subordinatesCount = await User.countDocuments({level:{$gte:3} , superior:user._id})
                     if(subordinatesCount >= 5) user.level = 7
                 }
             }
             if(user.level === 7) {
                 const lastMonthSalesSum = getLastMonthSalesSum(user._id)
                 if(lastMonthSalesSum >= 100000000) {
-                    const subordinatesCount = await User.countDocuments({level:{$gte:6}})
+                    const subordinatesCount = await User.countDocuments({level:{$gte:6}, superior:user._id})
                     if(subordinatesCount >= 10) user.level = 8
                 }
             }
             if(user.level === 8) {
                 const lastMonthSalesSum = getLastMonthSalesSum(user._id)
                 if(lastMonthSalesSum >= 100000000) {
-                    const subordinatesCount = await User.countDocuments({level:{$gte:6}})
+                    const subordinatesCount = await User.countDocuments({level:{$gte:6}, superior:user._id})
                     if(subordinatesCount >= 20) user.level = 9
                 }
             }
             if(user.level === 9) {
                 const lastMonthSalesSum = getLastMonthSalesSum(user._id)
                 if(lastMonthSalesSum >= 100000000) {
-                    const subordinatesCount = await User.countDocuments({level:{$gte:6}})
+                    const subordinatesCount = await User.countDocuments({level:{$gte:6}, superior:user._id})
                     if(subordinatesCount >= 50) user.level = 10
                 }
             }
           
             await user.save()
 
-            console.log(`${count} of ${total} has been checked`);
+
         }))
         return res.sendStatus(200)
         

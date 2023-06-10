@@ -15,7 +15,7 @@ const newOrder = async (req, res) => {
         return res
             .status(400)
             .json({ message: 'phone number of address needed' });
-    if (!address.detail)
+    if (!address.details)
         return res.status(400).json({ message: 'detail of address needed' });
     if (!address.city)
         return res.status(400).json({ message: 'city of address needed' });

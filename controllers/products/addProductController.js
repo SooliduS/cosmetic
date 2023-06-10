@@ -18,7 +18,9 @@ const addProduct = async (req, res) => {
         description,
         inventory,
         level,
-        details
+        details,
+        englishName,
+        brief
     } = req.body;
     // categories:array colors:{rgb:string , hex:string , name:string} , images:array of string , tags:array of string, inventory:number
 
@@ -38,7 +40,9 @@ const addProduct = async (req, res) => {
             comments: [],
             rating: 3.5,
             ordersCount: 0,
-            details: details || []
+            details: details || [],
+            englishName,
+            brief
         });
         return res.status(201).json(newProduct);
     } catch (e) {

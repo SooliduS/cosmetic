@@ -34,7 +34,7 @@ const verifyAdmin = require('../../middlewares/verifyAdmin')
  *                 properties:
  *                   postalCode:
  *                     type: string
- *                   detail:
+ *                   details:
  *                     type: string
  *                   city:
  *                     type: string
@@ -51,7 +51,7 @@ const verifyAdmin = require('../../middlewares/verifyAdmin')
  *                 postalCode: 12345
  *                 detail: Example Street, 123
  *                 city: Example City
- *                 phoneNumber: 9876543210
+ *                 phoneNumber: '9876543210'
  *               paymentMethod: idpay
  *     responses:
  *       '201':
@@ -283,7 +283,7 @@ router.get('/single/:orderId' , getSingleOrder)
 /**
  * @swagger
  * /order/changeStatus:
- *   patch:
+ *   put:
  *     summary: Change order status (admin only)
  *     tags:
  *       - Order
@@ -315,7 +315,7 @@ router.get('/single/:orderId' , getSingleOrder)
  *         status:
  *           type: number
  */
-router.post('/changestatus', verifyAdmin ,changeOrderStatus )
+router.put('/changestatus', verifyAdmin ,changeOrderStatus )
 
 
 

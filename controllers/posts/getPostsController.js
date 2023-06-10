@@ -22,8 +22,9 @@ const getSalesmanPosts = async (req ,res) => {
         const userLevel = foundUser.level
 
         const posts = await Post.find({ $or: [{ level: { $lt: userLevel } }, { level: { $exists: false } }] }).skip(Number(offset)).limit(Number(limit));
+        const total = await Post.find({ $or: [{ level: { $lt: userLevel } }, { level: { $exists: false } }] })
 
-        return res.status(200).json(posts)
+        return res.status(200).json({posts , total})
 
     }catch(e){
         return res.status(500).json({message:e.message})

@@ -16,6 +16,7 @@ const specs = require('./config/swaggerOptions');
 const verifyJWT = require('./middlewares/verifyJWT');
 const verifyAdmin = require('./middlewares/verifyAdmin')
 const PORT = process.env.PORT || 3500;
+const {updateExpiredOffers} = require('./middlewares/updateExpiredOffers')
 
 // Connect to MongoDB
 connectDB();
@@ -48,7 +49,7 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs)); //swagger api doc
 app.use('/register' , require('./routes/users/register'))
 app.use('/login' , require('./routes/users/auth'))
 app.use('/refresh' , require('./routes/users/refresh'))
-app.use('/getproducts' , require('./routes/products/getProducts'))
+app.use('/getproducts' , updateExpiredOffers ,require('./routes/products/getProducts'))
 app.use('/getcategories' , require('./routes/categories/getCategories'))
 app.use('/getfilters' , require('./routes/filters/getFilters'))
 // app.use('/emailconfirmation' , )
