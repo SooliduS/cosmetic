@@ -2,6 +2,9 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const ORDER_STATUSES = require('../config/orderStatuses');
 
+const statuses = ORDER_STATUSES.map(x=> {return x.status})
+const messages = ORDER_STATUSES.map(x=> {return x.message})
+
 const orderSchema = new Schema(
     {
         buyer: {
@@ -38,12 +41,13 @@ const orderSchema = new Schema(
             type: Number,
             default: 1,
             required: true,
+            enum:statuses
         },
         message: {
             type: String,
-            default: 'در انتظار پرداخت',
+            default: messages[0],
             required: true,
-            enum: ORDER_STATUSES,
+            enum: messages,
         },
         orderNum: { type: Number, unique: true },
         deliveryNum: { type: Number, unique: true },

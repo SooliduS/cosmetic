@@ -1,14 +1,12 @@
 const axios = require('axios');
-const Transaction = require('../../models/transactionModel');
-const paymentStatuses = require('../../config/paymentStatuses');
+const ORDER_STATUSES = require('../../config/orderStatuses');
+const PAYMENT_STATUSES = require('../../config/paymentStatuses');
 const Order = require('../../models/orderModel');
 const mongoose = require('mongoose');
 const Wallet = require('../../models/walletModel');
-const WalletTransactoion = require('../../models/walletTransactionsModel');
 
 const verifyPayment = async (req, res) => {
     if (!req.body.order_id || !req.body.track_id || !req.body.id)
-        //values given from idpay (order_id === transactionId)
         return res
             .status(400)
             .json({ message: 'order_id ; id and track_id needed' });
@@ -18,10 +16,6 @@ const verifyPayment = async (req, res) => {
     try {
         await session.withTransaction(
             async () => {
-                const foundTransaction = await Transaction.findById(
-                    req.body.order_id
-                ).session(session);
-
                 const response = await axios.post(
                     'https://api.idpay.ir/v1.1/payment/verify',
                     { id: req.body.id, order_id: req.body.order_id },
@@ -34,11 +28,11 @@ const verifyPayment = async (req, res) => {
                     }
                 );
 
-                if (!response || !response.data) {
+                if (!response || !response.data || response.status !== 200) {
                     throw new Error('Invalid response from IDPay API');
                 }
 
-                let message = paymentStatuses[response.data.status];
+                let message = PAYMENT_STATUSES[response.data.status];
                 if (response.data.status === 101) message = null;
                 const status = response.data.status;
                 const card_no = response.data.payment.card_no;
@@ -46,6 +40,13 @@ const verifyPayment = async (req, res) => {
                 const date = response.data.payment.date;
                 const track_id = response.data.payment.track_id;
 
+                //order and transaction actions
+                const foundOrder = await Order.findById(req.body.order_id)
+                    .populate('Transaction')
+                    .session(session);
+                const foundTransaction = foundOrder.transaction;
+
+                //transaction actions
                 foundTransaction.status = status;
                 foundTransaction.card_no = card_no;
                 foundTransaction.hashed_card_no = hashed_card_no;
@@ -53,92 +54,36 @@ const verifyPayment = async (req, res) => {
                 foundTransaction.track_id = track_id;
                 foundTransaction.message = message || foundTransaction.message;
 
-                // each order actions
+                //order actions
+                if (status === 100) {
+                    foundOrder.status = 2;
+                    foundOrder.message = ORDER_STATUSES.find(
+                        (x) => x.status === 2
+                    ).message;
+                    foundOrder.transaction = foundTransaction._id;
+                }
+
+                await foundOrder.save();
+                await foundTransaction.save();
+
+                //add founds to salesman wallets
                 await Promise.all(
-                    foundTransaction.orders.map(async (order) => {
-                        const foundOrder = await Order.findById(order).session(
-                            session
-                        );
-
-                        foundOrder.message = message || foundOrder.message; //change status of order
-                        foundOrder.transaction = foundTransaction._id; //add id of transaction
-                        foundOrder.status = status
-
-                        // supplier's wallet
-                        let supplierWallet = await Wallet.findOne({
-                            ownerModel: 'Supplier',
-                            owner: foundOrder.supplier,
-                        }).session(session);
-                        if (!supplierWallet)
-                            supplierWallet = await Wallet.create({
-                                ownerModel: 'Supplier',
-                                owner: foundOrder.supplier,
+                    foundOrder.items.map(async (item) => {
+                        if (affId) {
+                            const foundWallet = await Wallet.findOne({
+                                owner: item.affId,
                             });
-
-                        //customer's wallet
-
-                        let costumerWallet = await Wallet.findOne({
-                            owner: foundOrder.buyer,
-                        }).session(session);
-                        if (!costumerWallet)
-                            costumerWallet = await Wallet.create({
-                                ownerModel: foundOrder.buyerModel,
-                                owner: foundOrder.buyer,
-                            });
-
-                        if (foundOrder.aff_id && foundOrder.aff_percent) { //if it't affiliated
-                            //find or creat affliator wallet
-                            let affWallet = await Wallet.findOne({
-                                owner: aff_id,
-                            }).session(session);
-                            if (!affWallet)
-                                affWallet = await Wallet.create({
-                                    owner: aff_id,
-                                    ownerModel: 'User',
-                                });
-
-                            //add wallet transactions
-                            const affShare =
-                                (foundOrder.aff_percent / 100) *
-                                foundOrder.payablePrice;
-                            const supplierShare =
-                                foundOrder.payablePrice - affShare;
-
-                            //affliator wallet transaction
-                            await WalletTransactoion.create({
-                                sender: costumerWallet._id,
-                                reciever: affWallet._id,
-                                amount: affShare,
+                            foundWallet.balance += item.commission;
+                            foundWallet.transaction.push({
                                 order: foundOrder._id,
-                                transaction: foundTransaction._id,
-                                message:'payment from buyer to affiliator'
+                                transactionType: 'commission',
+                                createdAt: new Date.now(),
+                                amount: item.commission,
                             });
-                            //supplier wallet transaction
-                            await WalletTransactoion.create({
-                                sender: costumerWallet._id,
-                                reciever: supplierWallet._id,
-                                amount: supplierShare,
-                                order: foundOrder._id,
-                                transaction: foundTransaction._id,
-                                message:'payment from buyer to seller'
-                            });
-                        } else {
-                            //create a new wallet transaction
-                            await WalletTransactoion.create({
-                                sender: costumerWallet._id,
-                                reciever: supplierWallet._id,
-                                amount: foundOrder.payablePrice,
-                                order: foundOrder._id,
-                                transaction: foundTransaction._id,
-                                message:'payment from buyer to seller'
-                            });
+                            await foundWallet.save();
                         }
-
-                        await foundOrder.save();
                     })
                 );
-
-                await foundTransaction.save();
 
                 res.status(201).json(response.data);
             },
@@ -152,4 +97,4 @@ const verifyPayment = async (req, res) => {
     }
 };
 
-module.exports = verifyPayment;
+module.exports = { verifyPayment };

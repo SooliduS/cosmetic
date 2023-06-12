@@ -9,7 +9,7 @@ const walletSchema = new Schema(
             unique: true,
         },
         isActive: { type: Boolean, default: true },
-        stock: { type: Number, required: true, default: 0 },
+        balance: { type: Number, required: true, default: 0 },
         transactions:[
             {
                 order:{type:Schema.Types.ObjectId , ref:'Order'},

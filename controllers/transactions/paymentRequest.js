@@ -1,28 +1,20 @@
 const axios = require('axios');
 const Transaction = require('../../models/transactionModel');
-const Order = require('../../models/orderModel');
 
 const sendPaymentRequest = async (req, res) => {
-    if (!req.body.order) return res.sendStatus(400);
+    if (!req.body.orderId) return res.sendStatus(400);
 
     try {
-        let payablePrice = 0;
-        await Promise.all(
-            req.body.orders.map(async (order) => {
-                const foundOrder = await Order.findById(order);
-                payablePrice += foundOrder.payablePrice;
-            })
-        );
         const transaction = await Transaction.create({
             sender: req._id,
             amount: payablePrice,
-            order: req.body.order,
+            order: req.body.orderId,
         });
 
         const response = await axios.post(
             'https://api.idpay.ir/v1.1/payment',
             {
-                order_id: transaction._id,
+                order_id: req.body.orderId,
                 amount: transaction.amount,
                 callback: 'http://localhost:3000/checkout/checkout',
             },
@@ -48,4 +40,4 @@ const sendPaymentRequest = async (req, res) => {
     }
 };
 
-module.exports = sendPaymentRequest;
+module.exports = {sendPaymentRequest};

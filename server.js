@@ -62,6 +62,7 @@ app.use('/logout' , require('./routes/users/logout'))
 app.use('/order' , require('./routes/orders/crud'))
 app.use('/users',require('./routes/users/privates'))
 app.use('/post' , require('./routes/posts/crud'))
+app.use('/payment' , require('./routes/transactions/transactions'))
 
 //admin private routes
 app.use(verifyAdmin)//↓

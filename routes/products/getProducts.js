@@ -435,7 +435,7 @@ router.get('/salesman', verifyJWT, getSalesmanProducts);
  *   get:
  *     summary: Get similar products
  *     tags:
- *       - Products
+ *       - getProducts
  *     description: Retrieve similar products based on shared tags with a given product.
  *     produces:
  *       - application/json

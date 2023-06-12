@@ -3,7 +3,7 @@ const Schema = mongoose.Schema;
 
 const transactionSchema = new Schema(
     {
-        id: String,
+        id: {type:String , unique:true},
         sender: { type: Schema.Types.ObjectId, ref: 'User' },
         reciever: { type: Schema.Types.ObjectId, ref: 'User' },
         amount: Number,
@@ -17,7 +17,7 @@ const transactionSchema = new Schema(
         card_no: String,
         hashed_card_no: String,
         date: Date,
-        track_id: String,
+        track_id: {type:String , unique:true},
     },
     { timestamps: true }
 );
