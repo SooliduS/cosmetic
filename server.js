@@ -52,6 +52,7 @@ app.use('/refresh' , require('./routes/users/refresh'))
 app.use('/getproducts' , updateExpiredOffers ,require('./routes/products/getProducts'))
 app.use('/getcategories' , require('./routes/categories/getCategories'))
 app.use('/getfilters' , require('./routes/filters/getFilters'))
+app.use('/getstatuses' , require('./routes/statuses/getStatuses'))
 // app.use('/emailconfirmation' , )
 
 

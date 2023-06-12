@@ -155,6 +155,7 @@ const getSalesmanProducts = async (req, res) => {
     try {
         const foundUser = await User.findById(req._id);
 
+        
         const products = await Product.find({
             level: { $lte: foundUser.level },
             ...params.filter,
