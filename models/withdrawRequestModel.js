@@ -13,7 +13,7 @@ const withdrawRequestSchema = new Schema({
     operator:{type:Schema.Types.ObjectId , ref:'User'},
     bankName:{type:String , enum:BANK_LIST},
     status:{type:Number , default:1 , enum:statuses },
-    message: {String , default: messages[0] , enum:messages},
+    message: {type:String , enum:messages , default:messages[0]},
     adminMessage:String,
     trackId : String,
 	bankCardNumber:String,

@@ -7,7 +7,7 @@ const sendPaymentRequest = async (req, res) => {
     try {
         const transaction = await Transaction.create({
             sender: req._id,
-            amount: payablePrice,
+            amount: payablePrice,//has to define
             order: req.body.orderId,
         });
 
@@ -16,7 +16,7 @@ const sendPaymentRequest = async (req, res) => {
             {
                 order_id: req.body.orderId,
                 amount: transaction.amount,
-                callback: `${process.env.BASE_URL}/checkout`,
+                callback: `${process.env.BASE_URL}/app/checkout`,
             },
             {
                 headers: {

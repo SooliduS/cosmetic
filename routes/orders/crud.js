@@ -49,7 +49,7 @@ const verifyAdmin = require('../../middlewares/verifyAdmin')
  *                   salesmanNumber: 5126526
  *               address:
  *                 postalCode: 12345
- *                 detail: Example Street, 123
+ *                 details: Example Street, 123
  *                 city: Example City
  *                 phoneNumber: '9876543210'
  *               paymentMethod: idpay

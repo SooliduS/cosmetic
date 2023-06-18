@@ -53,6 +53,7 @@ app.use('/getproducts' , updateExpiredOffers ,require('./routes/products/getProd
 app.use('/getcategories' , require('./routes/categories/getCategories'))
 app.use('/getfilters' , require('./routes/filters/getFilters'))
 app.use('/getstatuses' , require('./routes/statuses/getStatuses'))
+app.use('/payment' , require('./routes/transactions/transactions'))
 // app.use('/emailconfirmation' , )
 
 
@@ -63,7 +64,8 @@ app.use('/logout' , require('./routes/users/logout'))
 app.use('/order' , require('./routes/orders/crud'))
 app.use('/users',require('./routes/users/privates'))
 app.use('/post' , require('./routes/posts/crud'))
-app.use('/payment' , require('./routes/transactions/transactions'))
+app.use('/withdrawrequests' , require('./routes/withdrawRequests/crud'))
+app.use('/verification' , require('./routes/users/verification'))
 
 //admin private routes
 app.use(verifyAdmin)//↓

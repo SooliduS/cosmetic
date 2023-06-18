@@ -74,7 +74,8 @@ const userSchema = new Schema(
         },
 		superior:{type:Schema.Types.ObjectId , ref:'User'},
         wallet:{type:Schema.Types.ObjectId , ref:'Wallet'},
-		commissionPercentage:Number
+		commissionPercentage:Number,
+        emailVerificationNum:{type:String , sparse: true }
     },
     { timestamps: true }
 );

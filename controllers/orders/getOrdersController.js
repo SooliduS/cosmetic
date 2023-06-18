@@ -8,7 +8,7 @@ const getOrders = async (req, res) => {
 
     try {
         const total = await Order.countDocuments({...filter , status:{$gte:2}})
-        const orders = await Order.find({...filter , status:{$gte:2}})
+        const orders = await Order.find({...filter , status:{$gte:2}}).populate('items.product')
             .sort(sort)
             .skip(Number(offset))
             .limit(Number(limit));
@@ -25,7 +25,7 @@ const getOrdersByUser = async(req ,res) => {
 
     const buyer = req.params?.id || req._id
     try{
-        const orders = await Order.find({buyer  , ...filter , status:{$gte:2}} ,{seen:0}).sort(sort).skip(Number(offset)).limit(Number(limit))
+        const orders = await Order.find({buyer  , ...filter , status:{$gte:2}} ,{seen:0}).populate('items.product').sort(sort).skip(Number(offset)).limit(Number(limit))
         const total = await Order.find({buyer  , ...filter , status:{$gte:2}} )
 
         return res.status(200).json({orders , total})
@@ -38,7 +38,7 @@ const getSingleOrder = async( req ,res ) => {
     const {orderId} = req.params
     if(!orderId) return res.status(400).json({message:'order id needed'})
 
-    const order = await Order.findById(orderId)
+    const order = await Order.findById(orderId).populate('items.product')
 
     if(!order) return res.sendStatus(404)
 

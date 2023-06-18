@@ -298,66 +298,66 @@ router.get('/single/:slug', getProduct);
 
 /**
  * @swagger
- * /getproducts/list/{ids}:
- *   get:
- *     summary: Get a list of products by IDs
- *     tags:
- *       - getProducts
- *     parameters:
- *       - in: path
- *         name: ids
- *         schema:
- *           type: string
- *         required: true
- *         description: IDs of the products (dash-separated)
- *         example: lhiwufhowuefwhef0-ijsfohoufhweufwf-oiwofwneofwnwf
+ * /getproducts/list:
+ *   post:
+ *     summary: Get list of products
+ *     description: Retrieve the list of products with pricing details.
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               items:
+ *                 type: array
+ *                 items:
+ *                   type: object
+ *                   properties:
+ *                     slug:
+ *                       type: string
+ *                       description: The slug of the product
+ *                     quantity:
+ *                       type: integer
+ *                       description: The quantity of the product.
  *     responses:
- *       '200':
+ *       200:
  *         description: Successful operation
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/ProductListResponse'
- *       '500':
- *         description: Internal server error
- *         content:
- *           application/json:
- *             example:
- *               message: An error occurred while retrieving the products.
- *
- * components:
- *   schemas:
- *     ProductListResponse:
- *       type: object
- *       properties:
- *         products:
- *           type: array
- *           items:
- *             $ref: '#/components/schemas/Product'
- *         total:
- *           type: number
- *
- *     Product:
- *       type: object
- *       properties:
- *         _id:
- *           type: string
- *         name:
- *           type: string
- *         description:
- *           type: string
- *         price:
- *           type: number
- *         category:
- *           type: string
- *         brand:
- *           type: string
- *         createdAt:
- *           type: string
- *         updatedAt:
- *           type: string
+ *               type: object
+ *               properties:
+ *                 items:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *                     properties:
+ *                       product:
+ *                         $ref: '#/components/schemas/Product'
+ *                       price:
+ *                         type: number
+ *                         description: The calculated price of the product based on the quantity.
+ *                       discountedPrice:
+ *                         type: number
+ *                         description: The calculated discounted price of the product based on the quantity and discount percentage.
+ *                       discount:
+ *                         type: number
+ *                         description: The calculated discount amount applied to the product based on the quantity and discount percentage.
+ *                 priceSum:
+ *                   type: number
+ *                   description: The sum of the calculated prices of all products.
+ *                 discountSum:
+ *                   type: number
+ *                   description: The sum of the calculated discount amounts applied to all products.
+ *                 discountedPriceSum:
+ *                   type: number
+ *                   description: The sum of the calculated discounted prices of all products.
+ *                 total:
+ *                   type: integer
+ *                   description: The total number of products in the list.
  */
-router.get('/list/:ids', getListOfProducts);
+router.post('/list/', getListOfProducts);
 
 /**
  * @swagger

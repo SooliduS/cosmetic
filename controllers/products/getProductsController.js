@@ -30,6 +30,7 @@ const getAllProducts = async (req, res) => {
             .skip(Number(offset))
             .limit(Number(limit));
 
+
         const colors = await Product.distinct('colors.name', params.filter);
         const brands = await Product.distinct('brand', params.filter);
 
@@ -131,19 +132,34 @@ const getProduct = async (req, res) => {
 };
 
 const getListOfProducts = async (req, res) => {
-    const products = req.params.ids.split('-');
+    const items = req.body.items;
 
     try {
-        const total = products.length;
-        const foundProducts = await Promise.all(
-            products.map(async (id) => {
-                const foundProduct = await Product.findById(id);
-                return foundProduct;
+        const total = items.length;
+        const foundItems = await Promise.all(
+            items.map(async (item) => {
+                const foundProduct = await Product.findOne({slug:item.slug});
+                if(!foundProduct) throw new Error('product not found')
+                const price = foundProduct.price *item.quantity
+                const discountedPrice = price - (foundProduct.discount / 100) * price * item.quantity
+                const discount = (foundProduct.discount / 100) * price * item.quantity
+                return {product:foundProduct , price , discountedPrice , discount};
             })
         );
 
-        return res.status(200).json({ products: foundProducts, total });
+        let priceSum = 0
+        let discountedPriceSum = 0
+        let discountSum = 0
+
+        foundItems.map(item =>{
+            priceSum += item.price
+            discountSum += item.discount
+            discountedPriceSum += item.discountedPrice
+        })
+
+        return res.status(200).json({ items: foundItems , priceSum, discountSum , discountedPriceSum  ,total });
     } catch (e) {
+        if(e.message === 'product not found') return res.status(404).json({message:e.message})
         return res.status(500).json({ message: e.message });
     }
 };

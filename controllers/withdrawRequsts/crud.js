@@ -1,7 +1,8 @@
 const Wallet = require('../../models/walletModel');
 const User = require('../../models/userModel');
-const WithdrawRequest = require('../../models/withdrawRequstsModel');
+const WithdrawRequest = require('../../models/withdrawRequestModel');
 const WITHDRAW_STATUSES = require('../../config/withdrawRequestStatuses');
+const mongoose = require('mongoose');
 
 const newWithdrawRequest = async (req, res) => {
     const { amount } = req.body;
@@ -14,8 +15,8 @@ const newWithdrawRequest = async (req, res) => {
         if (!foundWallet)
             return res.status(404).json({ message: 'wallet not found' });
 
-        if (foundWallet.balance < withdrawRequest)
-            return res.status(400).josn({
+        if (foundWallet.balance < amount)
+            return res.status(400).json({
                 message: 'wallet balance is less than the requested amount',
             });
 
@@ -26,6 +27,8 @@ const newWithdrawRequest = async (req, res) => {
             bankCardNumber: foundUser.bankCardNumber,
             bankShabaNumber: foundUser.bankShabaMumber,
         });
+
+        return res.status(200).json(withdrawRequest);
     } catch (e) {
         res.status(500).json({ message: e.message });
     }
@@ -81,10 +84,12 @@ const handleChangeStatus = async (req, res) => {
             return res.status(404).json({ message: 'Request not found' });
         }
 
-        const message = WITHDRAW_STATUSES.find(x => x.status === status).message;
+        const message = WITHDRAW_STATUSES.find(
+            (x) => x.status === status
+        ).message;
 
-        if (foundReq.status === 2) {
-            const foundWallet = await Wallet.findOne({ owner: foundReq.user }).session(session);
+        if (foundReq.status === 1 && req.body.status === 2) {
+            const foundWallet = await Wallet.findOne({ owner: foundReq.user });
             if (foundWallet.balance < foundReq.amount) {
                 await session.abortTransaction();
                 session.endSession();
@@ -93,9 +98,9 @@ const handleChangeStatus = async (req, res) => {
                 });
             }
             foundWallet.balance -= foundReq.amount;
-            foundReq.transactions.push({
+            foundWallet.transactions.push({
                 transactionType: 'withdraw',
-                createdAt: new Date().now,
+                createdAt: Date.now(),
                 amount: foundReq.amount,
             });
             await foundWallet.save();
@@ -119,7 +124,6 @@ const handleChangeStatus = async (req, res) => {
         return res.status(500).json({ message: e.message });
     }
 };
-
 
 module.exports = {
     newWithdrawRequest,

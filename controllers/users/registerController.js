@@ -53,10 +53,7 @@ const handleNewUser = async (req, res) => {
         result.wallet = wallet._id
 
         await result.save()
-
-        //send validation email
-        sendValidationEmail(result.email);
-
+        
         console.log(result);
 
         res.status(201).json({

@@ -1,6 +1,7 @@
 const router = require('express').Router()
 const {sendPaymentRequest} = require('../../controllers/transactions/paymentRequest')
 const {verifyPayment} = require('../../controllers/transactions/verifyPayment')
+const verifyJWT = require('../../middlewares/verifyJWT')
 
 /**
  * @swagger
@@ -35,7 +36,7 @@ const {verifyPayment} = require('../../controllers/transactions/verifyPayment')
  *       '500':
  *         description: Internal server error
  */
-router.post('/request' , sendPaymentRequest)
+router.post('/request' , verifyJWT , sendPaymentRequest)
 
 /**
  * @swagger

@@ -151,9 +151,9 @@ router.get('/user/:id' , getWithdrawRequestsByUser)
  *             type: object
  *             properties:
  *               status:
- *                 type: string
+ *                 type: number
  *                 description: The new status of the withdraw request
- *                 example: completed
+ *                 example: 2
  *               bankName:
  *                 type: string
  *                 description: The bank name (optional)
@@ -239,6 +239,6 @@ router.put('/handleChangeStatus/:id' , handleChangeStatus)
  *                   type: string
  *                   example: Internal server error occurred
  */
-router.post('addrequest' , newWithdrawRequest)
+router.post('/addrequest' , newWithdrawRequest)
 
 module.exports = router
