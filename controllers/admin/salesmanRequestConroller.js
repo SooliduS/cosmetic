@@ -10,7 +10,7 @@ const getSalesmanRequests = async (req, res) => {
         const requests = await SalesmanRequest.find({
             confirmed: false,
             message: 'منتظر بررسی توسط ادمین',
-        }).sort('updatedAt');
+        }).populate('user' , 'melliCode username firstname lastname').sort('updatedAt');
 
         return res.status(200).json({ requests, total });
     } catch (e) {

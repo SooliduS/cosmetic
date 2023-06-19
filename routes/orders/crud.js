@@ -88,6 +88,27 @@ router.post('/create' , newOrder)
  *         in: query
  *         schema:
  *           type: String
+ *       - in: query
+ *         name: status
+ *         schema:
+ *           type: string
+ *         description: Order status to filter by
+ *       - in: query
+ *         name: product
+ *         schema:
+ *           type: string
+ *         description: Product ID to filter by
+ *       - in: query
+ *         name: sort
+ *         schema:
+ *           type: string
+ *           enum: [cheapest , mostExpensive  , newest]
+ *         description: Sort order for the results
+ *       - in: query
+ *         name: category
+ *         schema:
+ *           type: string
+ *         description: Category to filter by
  *     produces:
  *       - application/json
  *     responses:
@@ -125,6 +146,27 @@ router.get('/user' , getOrdersByUser)
  *         in: query
  *         schema:
  *           type: String
+ *       - in: query
+ *         name: status
+ *         schema:
+ *           type: string
+ *         description: Order status to filter by
+ *       - in: query
+ *         name: product
+ *         schema:
+ *           type: string
+ *         description: Product ID to filter by
+ *       - in: query
+ *         name: sort
+ *         schema:
+ *           type: string
+ *           enum: [cheapest , mostExpensive  , newest]
+ *         description: Sort order for the results
+ *       - in: query
+ *         name: category
+ *         schema:
+ *           type: string
+ *         description: Category to filter by
  *     produces:
  *       - application/json
  *     responses:
@@ -173,6 +215,7 @@ router.get('/user/:id' , getOrdersByUser)
  *         name: sort
  *         schema:
  *           type: string
+ *           enum: [cheapest , mostExpensive  , newest]
  *         description: Sort order for the results
  *       - in: query
  *         name: category
