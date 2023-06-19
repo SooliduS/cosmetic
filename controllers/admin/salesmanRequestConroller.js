@@ -20,14 +20,14 @@ const getSalesmanRequests = async (req, res) => {
 
 const handleSalesmanRequest = async (req, res) => {
     // if(req.roles !== 'Admin' && req.roles !== 'Editor') return res.status(403).json({message:'only admin and editor have permission'})
-    const { message, requstId, confirmed } = req.body; //confirmed:boolean  products:array of product ids
+    const { message, requestId, confirmed } = req.body; //confirmed:boolean  products:array of product ids
 
-    if (!requstId)
+    if (!requestId)
         return res.status(400).json({ message: 'request id needed' });
     if (!message) return res.status(400).josn({ message: 'message needed' });
 
     try {
-        const foundReq = await SalesmanRequest.findById(requstId);
+        const foundReq = await SalesmanRequest.findById(requestId);
         if (!foundReq)
             return res.status(404).json({ message: 'request not found' });
 

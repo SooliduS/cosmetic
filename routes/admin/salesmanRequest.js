@@ -62,11 +62,6 @@ const verifyAdmin = require('../../middlewares/verifyAdmin');
  *         type: string
  *       confirmed:
  *         type: boolean
- *       products:
- *         type: array
- *         items:
- *           type: string
- *
  *   SalesmanRequest:
  *     type: object
  *     properties:
