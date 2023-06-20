@@ -217,6 +217,12 @@ router.get('/profile' , getProfile)
  *               bankCardNumber:
  *                 type: string
  *                 description: shomare karte banki
+ *               phoneNumber:
+ *                 type: string
+ *                 description: telefone sabet
+ *               mobileNumber:
+ *                 type: string
+ *                 description: telefone hamrah
  *             example:
  *               username: johnsmith
  *               address: {city: 'tehren' , state: 'tehran' , phoneNumber: '09124083425' , details: 'tehranpars khiabane rashid' , postalCode: '1651955487'}
@@ -229,6 +235,8 @@ router.get('/profile' , getProfile)
  *               melliCode: '1234567890'
  *               bankShabaNumber: 'IR570170000000201761599000'
  *               bankCardNumber: '6037997398091877'
+ *               phoneNumber: '02177931394'
+ *               mobileNumber: '09124083425'
  *     responses:
  *       '200':
  *         description: The user information was successfully updated.

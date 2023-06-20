@@ -48,12 +48,17 @@ const newOrder = async (req, res) => {
 
             if (item.salesmanNumber) {
                 const affUser = await User.findOne({ accountNumber: item.salesmanNumber }).session(session);
-                const affLevel = affUser?.level;
-                if (affUser && (foundProduct.level <= affLevel || !foundProduct.level)) {
-                    const onePercent = itemPrice / 100;
-                    const commission = onePercent * affUser.commissionPercentage;
 
-                    totalCommission += commission;
+                //check if it has superior
+                let superior
+                let superiorCommission = 0
+                if(affUser?.superior) superior = await User.findById(affUser.superior)
+                const affLevel = affUser?.level;
+                if (affUser && (foundProduct.level <= affLevel || !foundProduct.level)) { // if product doesn't have level affuser can sell it
+                    const onePercent = itemPrice / 100;
+                    if(superior?._id) superiorCommission = onePercent * 5 
+                    const commission = onePercent * affUser.commissionPercentage
+                    totalCommission += commission + superiorCommission;
                     itemsArr.push({
                         product: item.product,
                         quantity: item.quantity,
@@ -61,6 +66,8 @@ const newOrder = async (req, res) => {
                         commission,
                         affId: affUser._id,
                         affPercent: affUser.commissionPercentage,
+                        superiorCommission,
+                        superiorId:affUser.superior
                     });
                 }
             } else {

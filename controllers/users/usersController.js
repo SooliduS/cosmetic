@@ -66,6 +66,8 @@ const updateUser = async (req, res) => {
         melliCode,
         bankShabaNumber,
         bankCardNumber,
+        phoneNumber,
+        mobileNumber,
     } = req.body;
 
     try {
@@ -74,7 +76,7 @@ const updateUser = async (req, res) => {
 
         const duplicate = await User.findOne({ username });
 
-        if (duplicate)
+        if (duplicate && foundUser.username !== username)
             return res.status(409).json({ message: 'username used' });
 
         if (username && username !== foundUser.username) foundUser.username = username;
@@ -88,6 +90,11 @@ const updateUser = async (req, res) => {
             foundUser.bankShabaNumber = bankShabaNumber;
         if (bankCardNumber && !foundUser.verified)
             foundUser.bankCardNumber = bankCardNumber;
+        if(phoneNumber) foundUser.phoneNumber = phoneNumber
+        if(mobileNumber) {
+            foundUser.mobileNumber = mobileNumber
+            foundUser.isMobileNumberConfirmed = false
+        }
 
         await foundUser.save();
 

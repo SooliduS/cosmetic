@@ -22,6 +22,8 @@ const orderSchema = new Schema(
                 quantity: { type: Number, required: true },
                 price: { type: Number, required: true },
 				commission:Number,
+                superiorCommission:Number,
+                superiorId : {type:Schema.Types.ObjectId , ref:'User'},
 				affId:{type:Schema.Types.ObjectId , ref:'User'},
 				affPercent:Number
             },

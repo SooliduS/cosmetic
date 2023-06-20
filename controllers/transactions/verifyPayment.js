@@ -80,6 +80,17 @@ const verifyPayment = async (req, res) => {
                                 createdAt: new Date.now(),
                                 amount: item.commission,
                             });
+                            if(item.superiorId) {
+                                const superiorWallet = await Wallet.findOne({owner:item.superiorId}) 
+                                superiorWallet.balance += item.superiorCommission;
+                                superiorWallet.transaction.push({
+                                    order: foundOrder._id,
+                                    transactionType: 'commission',
+                                    createdAt: new Date.now(),
+                                    amount: item.superiorCommission,
+                                });
+                                await superiorWallet.save()
+                            }
                             await foundWallet.save();
                         }
                     })

@@ -15,7 +15,6 @@ const getProfile = async (req, res) => {
             username,
             firstname,
             lastname,
-            roles,
             email,
             accounNumber,
             isEmailConfirmed,
@@ -35,6 +34,8 @@ const getProfile = async (req, res) => {
             wallet,
             accountNumber
         } = profile;
+
+        const roles = Object.values(profile.roles).filter(role => role != null);
 
         res.status(200).json({
             username,
