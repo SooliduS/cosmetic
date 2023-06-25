@@ -68,6 +68,7 @@ const updateUser = async (req, res) => {
         bankCardNumber,
         phoneNumber,
         mobileNumber,
+        melliCardImg
     } = req.body;
 
     try {
@@ -86,6 +87,7 @@ const updateUser = async (req, res) => {
         if (firstname && !foundUser.verified) foundUser.firstname = firstname;
         if (lastname && !foundUser.verified) foundUser.lastname = lastname;
         if (melliCode && !foundUser.verified) foundUser.melliCode = melliCode;
+        if (melliCardImg && !foundUser.verified) foundUser.melliCardImg = melliCardImg;
         if (bankShabaNumber && !foundUser.verified)
             foundUser.bankShabaNumber = bankShabaNumber;
         if (bankCardNumber && !foundUser.verified)

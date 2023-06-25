@@ -59,7 +59,7 @@ const getProfile = async (req, res) => {
             superior,
             commissionPercentage,
             wallet,
-            accountNumber
+            accountNumber,
         });
     } catch (e) {
         return res.status(500).json({ message: e.message });

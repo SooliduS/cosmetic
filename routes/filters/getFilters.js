@@ -1,4 +1,4 @@
-const {getBrandsAndColors} = require('../../controllers/filters/getBrandAndColorController')
+const {getFilters} = require('../../controllers/filters/getBrandAndColorController')
 const router = require('express').Router()
 
 /**
@@ -9,24 +9,6 @@ const router = require('express').Router()
  *     tags:
  *       - getFilters
  *     parameters:
- *       - name: colors
- *         description: list of color names of the products splited by "-"
- *         in: query
- *         example: آبی-سفید-صورتی
- *         schema:
- *           type: string
- *       - name: brands
- *         description: list of Brands of the products splited by "-"
- *         in: query
- *         example: oreal-nike-golrang
- *         schema:
- *           type: string
- *       - name: price
- *         description: Price range of the product
- *         in: query
- *         schema:
- *           type: string
- *         example: 100000-200000
  *       - name: categories
  *         description: list of ids of categories that need to search for (for subcategories just send a subcategory id alone) splited by "-"
  *         in: query
@@ -63,6 +45,6 @@ const router = require('express').Router()
  *             example:
  *               message: An error occurred while retrieving brands and colors.
  */
-router.get('/' , getBrandsAndColors)
+router.get('/' , getFilters)
 
 module.exports = router

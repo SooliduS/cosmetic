@@ -38,7 +38,7 @@ const getSingleOrder = async( req ,res ) => {
     const {orderId} = req.params
     if(!orderId) return res.status(400).json({message:'order id needed'})
 
-    const order = await Order.findById(orderId).populate('items.product')
+    const order = await Order.findById(orderId).populate('items.product').populate('buyer' , 'username firstname lastname phoneNumber mobileNumber')
 
     if(!order) return res.sendStatus(404)
 

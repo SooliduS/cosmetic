@@ -16,7 +16,7 @@ const sendPaymentRequest = async (req, res) => {
             {
                 order_id: req.body.orderId,
                 amount: transaction.amount,
-                callback: `${process.env.BASE_URL}/app/checkout`,
+                callback: 'localhost:3000/app/checkout',
             },
             {
                 headers: {

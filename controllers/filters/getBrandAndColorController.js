@@ -1,7 +1,7 @@
 const Product = require('../../models/productModel')
 const filterProducts = require('../../lib/filterProducts')
 
-const getBrandsAndColors = async (req ,res) => {
+const getFilters = async (req ,res) => {
 
     const { filter } = filterProducts(req)
 
@@ -16,4 +16,4 @@ const getBrandsAndColors = async (req ,res) => {
 
 }
 
-module.exports = {getBrandsAndColors}
+module.exports = {getFilters}

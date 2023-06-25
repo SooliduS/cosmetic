@@ -17,7 +17,10 @@ const handleNewUser = async (req, res) => {
     if (duplicate) return res.sendStatus(409); //Conflict
 
     //check superior
-    const foundSuperior = await User.findOne({ accountNumber: superior });
+    let foundSuperior
+    if (superior) {
+       foundSuperior = await User.findOne({ accountNumber: Number(superior) });
+    }
 
     if (!foundSuperior)
         return res
@@ -41,7 +44,7 @@ const handleNewUser = async (req, res) => {
             password: hashedPwd,
             email,
             mobileNumber,
-            superior,
+            superior: foundSuperior._id,
             accountNumber,
         });
 
@@ -50,10 +53,10 @@ const handleNewUser = async (req, res) => {
             owner: result._id,
         });
 
-        result.wallet = wallet._id
+        result.wallet = wallet._id;
 
-        await result.save()
-        
+        await result.save();
+
         console.log(result);
 
         res.status(201).json({
