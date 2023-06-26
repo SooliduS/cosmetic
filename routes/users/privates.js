@@ -122,6 +122,9 @@ router.get('/all' , verifyAdmin , getAllUsers )//verifyAdmin
  *                 isMelliCardConfimed:
  *                   type: boolean
  *                   description: Indicates if the user's national identification card is confirmed.
+ *                 melliCardImg:
+ *                   type: string
+ *                   description: The image of mellicard.
  *                 verified:
  *                   type: boolean
  *                   description: Indicates if the user is verified.
@@ -211,6 +214,9 @@ router.get('/profile' , getProfile)
  *               melliCode:
  *                 type: string
  *                 description: The new national identification number (only applicable if the user is not verified).
+ *               melliCardImg:
+ *                 type: string
+ *                 description: url of the image of the melli card
  *               bankShabaNumber:
  *                 type: string
  *                 description: shomare hesabe banki
@@ -233,6 +239,7 @@ router.get('/profile' , getProfile)
  *               firstname: John
  *               lastname: Smith
  *               melliCode: '1234567890'
+ *               melliCardImg: 'https://example.com/image.jpg'
  *               bankShabaNumber: 'IR570170000000201761599000'
  *               bankCardNumber: '6037997398091877'
  *               phoneNumber: '02177931394'

@@ -26,7 +26,7 @@ const getOrdersByUser = async(req ,res) => {
     const buyer = req.params?.id || req._id
     try{
         const orders = await Order.find({buyer  , ...filter , status:{$gte:2}} ,{seen:0}).populate('items.product').sort(sort).skip(Number(offset)).limit(Number(limit))
-        const total = await Order.find({buyer  , ...filter , status:{$gte:2}} )
+        const total = await Order.countDocuments({buyer  , ...filter , status:{$gte:2}} )
 
         return res.status(200).json({orders , total})
     }catch(e){
@@ -49,7 +49,7 @@ const getSingleOrder = async( req ,res ) => {
         await order.save()
     }
     //only the user who makes order and admin can get this order
-    if(!req.roles.includes(1344) && !req.roles.includes(1346) && order.buyer != req._id) return res.sendStatus(403)
+    if(!req.roles.includes(1344) && !req.roles.includes(1346) && order.buyer._id != req._id) return res.sendStatus(403)
 
     return res.status(200).json(order)
 }

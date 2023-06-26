@@ -32,7 +32,9 @@ const getProfile = async (req, res) => {
             superior,
             commissionPercentage,
             wallet,
-            accountNumber
+            accountNumber,
+            melliCardImg,
+            isMelliCardConfirmed
         } = profile;
 
         const roles = Object.values(profile.roles).filter(role => role != null);
@@ -60,6 +62,8 @@ const getProfile = async (req, res) => {
             commissionPercentage,
             wallet,
             accountNumber,
+            melliCardImg,
+            isMelliCardConfirmed
         });
     } catch (e) {
         return res.status(500).json({ message: e.message });

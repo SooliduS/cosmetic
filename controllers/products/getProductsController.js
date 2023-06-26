@@ -9,48 +9,35 @@ const getAllProducts = async (req, res) => {
     if (!offset) offset = 0;
 
     try {
-        const result = await Product.aggregate([
-            { $match: params.filter }, // Apply the filter
-            {
-                $group: {
-                    _id: null,
-                    minPrice: { $min: '$price' },
-                    maxPrice: { $max: '$price' },
-                },
-            },
-            {
-                $project: {
-                    _id: 0,
-                    minPrice: 1,
-                    maxPrice: 1,
-                },
-            },
-        ])
-            .sort(params.sort)
-            .skip(Number(offset))
-            .limit(Number(limit));
 
         const colors = await Product.distinct('colors.name', params.filter);
         const brands = await Product.distinct('brand', params.filter);
 
-        if (result.length > 0) {
-            const { minPrice, maxPrice } = result[0];
-            console.log('Price Range:');
-            console.log('Minimum Price:', minPrice);
-            console.log('Maximum Price:', maxPrice);
-        } else {
-            console.log('No products found for the given filter.');
-        }
+
         const products = await Product.find(params.filter)
             .sort(params.sort)
             .skip(offset)
             .limit(limit);
 
+            if(products.length < 1) return res.sendStatus(204)
+
+            const sortedProducts = products.sort((a , b)=> a.price - b.price)
+            const minPrice = sortedProducts[0].price
+            const maxPrice = sortedProducts[sortedProducts.length-1].price
+            const priceRange = [minPrice , maxPrice]
+
+            if (sortedProducts.length > 0) {
+                console.log('Price Range:');
+                console.log('Minimum Price:', minPrice);
+                console.log('Maximum Price:', maxPrice);
+            } else {
+                console.log('No products found for the given filter.');
+            }
         const total = await Product.countDocuments(params.filter);
 
         return res
             .status(200)
-            .json({ products, total, priceRange: result, colors, brands });
+            .json({ products, total, priceRange, colors, brands });
     } catch (e) {
         return res.status(500).json({ message: e.message });
     }
@@ -70,7 +57,6 @@ const getAmazingOfferProducts = async (req, res) => {
 
         const total = await Product.countDocuments({
             isAmazingOffer: true,
-            discount: { $gte: 1 },
             ...params.filter,
         });
 
