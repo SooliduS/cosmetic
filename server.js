@@ -17,6 +17,7 @@ const verifyJWT = require('./middlewares/verifyJWT');
 const verifyAdmin = require('./middlewares/verifyAdmin')
 const PORT = process.env.PORT || 3500;
 const {updateExpiredOffers} = require('./middlewares/updateExpiredOffers')
+const {deleteExpiredTopBanners} = require('./middlewares/deleteExpiredTopBanners')
 
 // Connect to MongoDB
 connectDB();
@@ -54,6 +55,7 @@ app.use('/getcategories' , require('./routes/categories/getCategories'))
 app.use('/getfilters' , require('./routes/filters/getFilters'))
 app.use('/getstatuses' , require('./routes/statuses/getStatuses'))
 app.use('/payment' , require('./routes/transactions/transactions'))
+app.use('/topbanners' , deleteExpiredTopBanners ,  require('./routes/banners/topBanners'))
 // app.use('/emailconfirmation' , )
 
 

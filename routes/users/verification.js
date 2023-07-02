@@ -7,6 +7,7 @@ const {sendVerificationEmail , verifyVerificationEmail} = require('../../control
  *   get:
  *     summary: Send verification email
  *     description: Send a verification email to the user.
+ *     tags: [Verification]
  *     responses:
  *       200:
  *         description: Email sent successfully
@@ -49,6 +50,7 @@ router.get('/sendemail' , sendVerificationEmail )
  *   post:
  *     summary: Verify email
  *     description: Verify the user's email based on the verification code.
+ *     tags: [Verification]
  *     requestBody:
  *       required: true
  *       content:

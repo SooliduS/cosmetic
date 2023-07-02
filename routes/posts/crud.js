@@ -1,5 +1,5 @@
 const router = require('express').Router()
-const {addPost} = require('../../controllers/posts/addPostController')
+const {addPost , editPost , deletePost} = require('../../controllers/posts/addPostController')
 
 /**
  * @swagger
@@ -38,6 +38,9 @@ const {addPost} = require('../../controllers/posts/addPostController')
  *               level:
  *                 type: number
  *                 description: level of post that can be visible by salesman
+ *               slug:
+ *                 type: string
+ *                 description: slug of the post
  *             example:
  *               title: New Post
  *               content: This is a new post.
@@ -48,6 +51,7 @@ const {addPost} = require('../../controllers/posts/addPostController')
  *                 - keyword1
  *                 - keyword2
  *               level: 0
+ *               slug: post-slug
  *     responses:
  *       '201':
  *         description: The post was created successfully.
@@ -69,5 +73,105 @@ const {addPost} = require('../../controllers/posts/addPostController')
  *               message: An error occurred while creating the post.
  */
 router.post('/create' , addPost)
+
+/**
+ * @swagger
+ * /post/edit/{slug}:
+ *   put:
+ *     tags:
+ *       - Post
+ *       - Admin
+ *     summary: Edit a post
+ *     description: Edit an existing post by its slug.
+ *     parameters:
+ *       - in: path
+ *         name: slug
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: The slug of the post to edit.
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/PostEditRequest'
+ *     responses:
+ *       200:
+ *         description: Successfully edited the post
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Post'
+ *       400:
+ *         description: Invalid request
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   description: Error message indicating the reason for the invalid request.
+ *       404:
+ *         description: Post not found
+ *       500:
+ *         description: Internal server error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   description: Error message indicating an internal server error.
+ *     security:
+ *       - bearerAuth: []
+ */
+router.put('/edit/:slug' , editPost )
+
+/**
+ * @swagger
+ * /post/delete/{slug}:
+ *   delete:
+ *     summary: Delete a post
+ *     description: Delete an existing post by its slug.
+ *     tags: [Admin , Post]
+ *     parameters:
+ *       - in: path
+ *         name: slug
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: The slug of the post to delete.
+ *     responses:
+ *       200:
+ *         description: Successfully deleted the post
+ *       400:
+ *         description: Invalid request
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   description: Error message indicating the reason for the invalid request.
+ *       404:
+ *         description: Post not found
+ *       500:
+ *         description: Internal server error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   description: Error message indicating an internal server error.
+ *     security:
+ *       - bearerAuth: []
+ */
+router.delete('/delete/:slug' , deletePost)
 
 module.exports = addPost

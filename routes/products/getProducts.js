@@ -302,6 +302,7 @@ router.get('/single/:slug', getProduct);
  *   post:
  *     summary: Get list of products
  *     description: Retrieve the list of products with pricing details.
+ *     tags: [getProducts]
  *     requestBody:
  *       required: true
  *       content:

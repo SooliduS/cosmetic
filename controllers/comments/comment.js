@@ -3,7 +3,7 @@ const Product = require('../../models/productModel');
 const Order = require('../../models/orderModel');
 
 const addComment = async (req, res) => {
-    const { comment, rate, product, parentId } = req.body;
+    const { comment, rate, product, parentId ,post } = req.body;
 
     try {
         let role = 'user';
@@ -19,6 +19,7 @@ const addComment = async (req, res) => {
         const newComment = await Comment.create({
             comment,
             product,
+            post,
             author: {
                 id: req._id,
                 name: req.username,
@@ -43,5 +44,15 @@ const addComment = async (req, res) => {
         return res.status(500).json({ message: e.message });
     }
 };
+
+const confirmComment = async ( req , res ) => {
+    const {comment} = req.params
+
+    try{
+        const foundComment = await Comment.fin
+    }catch(e){
+
+    }
+}
 
 module.exports = addComment

@@ -17,6 +17,17 @@ const verifyAdmin = require('../../middlewares/verifyAdmin')
  *         in: query
  *         schema:
  *           type: string
+ *       - name: searchTitle
+ *         description: the search word that the post title include
+ *         in: query
+ *         type: string
+ *         example: شامپو
+ *       - name: sort
+ *         description: how to sort
+ *         in: query
+ *         schema:
+ *           type: string
+ *           enum: [ mostViews ,  newest]
  *     responses:
  *       200:
  *         description: All posts
@@ -46,6 +57,17 @@ router.get('/all' , verifyAdmin , getAllPosts)
  *         in: query
  *         schema:
  *           type: string
+ *       - name: searchTitle
+ *         description: the search word that the post title include
+ *         in: query
+ *         type: string
+ *         example: شامپو
+ *       - name: sort
+ *         description: how to sort
+ *         in: query
+ *         schema:
+ *           type: string
+ *           enum: [ mostViews ,  newest]
  *     responses:
  *       200:
  *         description: All posts
@@ -62,10 +84,11 @@ router.get('/salesman' , getSalesmanPosts)
 
 /**
  * @swagger
- * /posts/single/{slug}:
+ * /getposts/single/{slug}:
  *   get:
  *     summary: Get a single post
  *     description: Get a single post by its slug.
+ *     tags: [getPosts]    
  *     parameters:
  *       - in: path
  *         name: slug
