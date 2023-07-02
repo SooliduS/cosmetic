@@ -56,7 +56,7 @@ app.use('/getfilters' , require('./routes/filters/getFilters'))
 app.use('/getstatuses' , require('./routes/statuses/getStatuses'))
 app.use('/payment' , require('./routes/transactions/transactions'))
 app.use('/topbanners' , deleteExpiredTopBanners ,  require('./routes/banners/topBanners'))
-// app.use('/emailconfirmation' , )
+app.use('/getcomments' , require('./routes/comments/getComments'))
 
 
 //private routes

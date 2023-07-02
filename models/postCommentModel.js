@@ -8,7 +8,7 @@ const postCommentSchema = new Schema(
         author: {
             id: { type: Schema.Types.ObjectId, ref: 'User' },
             name: String,
-			role:{type:String , enum:['buyer' , 'user' , 'admin']},
+			role:{type:String , enum:['user' , 'admin']},
         },
         parentId: { type: Schema.Types.ObjectId, ref: 'Comment' },
         likes: [{ type: Schema.Types.ObjectId, ref: 'User' }],

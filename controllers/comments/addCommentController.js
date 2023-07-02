@@ -1,9 +1,10 @@
-const Comment = require('../../models/commentModel');
+const ProductComment = require('../../models/productCommentModel');
+const PostComment = require('../../models/postCommentModel')
 const Product = require('../../models/productModel');
 const Order = require('../../models/orderModel');
 
-const addComment = async (req, res) => {
-    const { comment, rate, product, parentId ,post } = req.body;
+const addProductComment = async (req, res) => {
+    const { comment, rate, product, parentId } = req.body;
 
     try {
         let role = 'user';
@@ -16,18 +17,17 @@ const addComment = async (req, res) => {
         });
         if (isBought) role = 'buyer';
 
-        const newComment = await Comment.create({
+        const newComment = await ProductComment.create({
             comment,
             product,
-            post,
             author: {
                 id: req._id,
                 name: req.username,
                 role,
-                parentId,
-                rate,
-                isConfirmed:role === 'admin' ? true : false
             },
+            parentId,
+            rate,
+            isConfirmed:role === 'admin' ? true : false
         });
         res.status(201).json(newComment);
 
@@ -45,14 +45,32 @@ const addComment = async (req, res) => {
     }
 };
 
-const confirmComment = async ( req , res ) => {
-    const {comment} = req.params
+const addPostComment = async (req ,res) => {
+    const { comment, rate, post, parentId } = req.body;
 
     try{
-        const foundComment = await Comment.fin
+        let role = 'user';
+        const roles = req.roles;
+        if (roles.includes(1344) || roles.includes(1346)) role = 'admin';
+        
+        const newComment = await PostComment.create({
+            comment,
+            post,
+            author: {
+                id: req._id,
+                name: req.username,
+                role,
+            },
+            parentId,
+            rate,
+            isConfirmed:role === 'admin' ? true : false
+        });
+        res.status(201).json(newComment);
     }catch(e){
-
+        return res.status(500).json({message:e.message})
     }
 }
 
-module.exports = addComment
+
+
+module.exports = {addProductComment , addPostComment}
