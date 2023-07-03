@@ -57,6 +57,7 @@ app.use('/getstatuses' , require('./routes/statuses/getStatuses'))
 app.use('/payment' , require('./routes/transactions/transactions'))
 app.use('/topbanners' , deleteExpiredTopBanners ,  require('./routes/banners/topBanners'))
 app.use('/getcomments' , require('./routes/comments/getComments'))
+app.use('/bodybanners' , require('./routes/banners/bodyBanners'))
 
 
 //private routes

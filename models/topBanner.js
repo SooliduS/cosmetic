@@ -4,7 +4,6 @@ const Schema = mongoose.Schema;
 const topBannerSchema = new Schema({
     sortOrder: {
         type: Number,
-        unique: true,
     },
     url: String,
     image: String,
