@@ -38,7 +38,7 @@ const addProductComment = async (req, res) => {
         });
         const length = allRates.length;
         foundProduct.rating = length
-            ? (foundProduct.rating * (length - 1) + rate) / length
+            ? ((foundProduct.rating * (length - 1)) + rate) / length
             : rate;
     } catch (e) {
         return res.status(500).json({ message: e.message });

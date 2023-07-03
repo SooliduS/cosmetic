@@ -81,13 +81,14 @@ const deleteTopBanners = async (req, res) => {
 const getTopBanners = async (req, res) => {
     const { offset, limit } = req.query;
     try {
+        const total = await TopBanner.countDocuments()
         const topBanners = await TopBanner.find()
             .skip(Number(offset))
             .limit(Number(limit))
             .sort({ sortOrder: -1 });
         return res
             .status(200)
-            .json({ banners: topBanners, total: topBanners.length });
+            .json({ banners: topBanners, total});
     } catch (e) {
         return res.status(500).json({ message: e.message });
     }

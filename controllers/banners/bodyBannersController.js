@@ -12,6 +12,8 @@ const addBodyBanner = async (req , res)=> {
             items,
             expirationDate
         })
+
+        return res.status(201).json(newBodyBanner)
     }catch(e){
         if(e.message === 'item.url , item.image , item.title needed') return res.status(400).json({message:e.message})
         return res.status(500).json({message:e.message})
@@ -39,6 +41,7 @@ const deleteBodyBanners = async( req , res ) => {
 
     try{
         await BodyBanner.deleteMany({_id:ids})
+        return res.sendStatus(200)
     }catch(e){
         return res.status(500).json({message:e.message})
     }
@@ -47,9 +50,10 @@ const deleteBodyBanners = async( req , res ) => {
 const getAllBodyBanners = async( req ,res ) => {
     const {limit , offset} = req.query
     try{
+        const total = await BodyBanner.countDocuments()
         const banners = await BodyBanner.find().skip(Number(offset)).limit(Number(limit))
 
-        return res.status(200).json({banners , total:banners.length})
+        return res.status(200).json({banners , total})
     }catch(e){
         return res.status(500).json({message:e.message})
     }
